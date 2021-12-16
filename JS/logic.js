@@ -129,7 +129,7 @@ var contracts = [
     {Account:'GenePoint', Status:'Draft', StartDate:'16/12/2021', ContractTerm:'6'},
     {Account:'Edge Communications', Status:'Activated', StartDate:'10/12/2021', ContractTerm:'12'},
     {Account:'Dickenson plc', Status:'Draft', StartDate:'21/1/2022', ContractTerm:'10'},
-    {Account:'Pyramid Construction inc.', Status:'Draft', StartDate:'18/12/2021', ContractTerm:'8'}
+    {Account:'Pyramid Construction inc.', Status:'Activated', StartDate:'18/12/2021', ContractTerm:'8'}
 ];
 contracts.forEach(createRows);
 function createRows(contracts) {
