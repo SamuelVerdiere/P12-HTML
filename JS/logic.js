@@ -108,7 +108,7 @@ createCtc.addEventListener('click', function() { //get the list of contacts from
 var contactes = [
     {Name:'Testing 2', Email:'Mail Test2', Phone:'222-555-6'},
     {Name:'Testing 3', Email:'Mail Test3', Phone:'222-555-7'},
-    {Name:'Testing 4', Email:'Mail Test4', Phone:'222-555-8'}
+    {Name:'Testing 4', Email:'Mail Test4', Phone:'222-555-9'}
 ];
 //on click on create button, add 1 row & 3 cells per element of the object
 contactes.forEach(createRow);
