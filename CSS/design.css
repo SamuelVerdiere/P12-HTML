@@ -1,0 +1,69 @@
+:root {
+    background-color: #b1c4de;
+    text-align: center;
+  }
+
+  .pageTitle {
+    font-size: 40px;
+  }
+  
+  #blog {
+    background-color: lightgreen;
+    min-height: 40px;
+    min-width: 80px;
+    margin:auto;
+    margin-bottom: 2%;
+  }
+
+.nickname {
+  margin-bottom:2%;
+}
+
+  .logout {
+    background-color: red;
+    min-height: 40px;
+    min-width: 80px;
+    margin:auto;
+  }
+  
+  #contactTitle, #contractTitle,
+  .createContact, .createContract {
+    display : block;
+  }
+  
+  .createContact, .createContract {
+    margin-top: 2%;
+    margin-bottom: 0.5%;
+   min-height: 30px;
+    min-width: 60px;
+    background-color:#0076d2;
+    position: relative;
+    margin: 0;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  
+  #loginId, #loginMdp {
+    margin-top: 2%;
+    margin:auto;
+  }
+
+  .divContact, .divContract {
+    background-color: #fefeff;
+    max-width: 90%;
+    position: relative;
+    left: 5%;
+    padding-bottom: 1%;
+  }
+  .titre {
+    background-color: #f2f2f3;
+    min-height: 75px;
+  }
+
+  .contacts, .contracts {
+      margin-left:auto;
+      margin-right:auto;
+      margin-top:2%;
+  }
+
+
