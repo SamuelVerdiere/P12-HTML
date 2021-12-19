@@ -47,14 +47,16 @@ hautPage.append(formlogin);
 pseudo.style.display = 'none';
 btnoff.style.display = 'none';
 tableaux.style.display = 'none';
+var loginvalue = document.querySelector('.loginId').value;
+var mdpvalue = document.querySelector('.loginMdp').value;
 
 //on click on "login" button :
 formlogin.addEventListener('submit', (e) => { 
     e.preventDefault();
     //if inputs are correctly filled:
-if(loginId.value == '' || loginMdp.value =='') {
+if(loginvalue == '' || lmdpvalue =='') {
     alert('Please fill Id & Password fields.');
-} else if(loginId.value !== '' && loginMdp.value !=='') {
+} else if(loginvalue !== '' && mdpvalue !=='') {
     //Display elements And...
     btnlog.style.display = 'none';
     loginId.style.display = 'none';
@@ -64,7 +66,18 @@ if(loginId.value == '' || loginMdp.value =='') {
     pseudo.append(formcancel);
     formcancel.appendChild(btnoff);
     //allow connection And...
+    const url = 'clips/tables/users';
 
+    $.ajax({
+        url: 'path/to/server-side/script.php', /*url*/
+        data: '', /* post data e.g name=christian&hobbie=loving */
+        type: '', /* POST|GET */
+        complete: function(d) {
+            var data= d.responseTXT;
+            /* Here you can use the data as you like */
+            $('#elementid').html(data);
+        }
+    });
     //show Tables
     tableaux.style.display = 'block';
 }
