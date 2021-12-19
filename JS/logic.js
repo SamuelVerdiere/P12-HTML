@@ -23,8 +23,8 @@ loginId.id            = 'loginId';
 loginMdp.id           = 'loginMdp';
 loginId.style.display = 'block';
 loginMdp.style.display= 'block';
-loginId.setAttribute = ('maxlength', "50");
-loginMdp.setAttribute= ('maxlength', "50");
+loginId.setAttribute = ('maxlength', "30");
+loginMdp.setAttribute= ('maxlength', "30");
 btnlog.type = 'submit';
 btnoff.type = 'cancel';
 //btn create inside tables
