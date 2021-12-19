@@ -11,7 +11,7 @@ application.use(express.urlencoded({ extended: true }));
 application.use(express.json());
 //2. connect to the PostGres/Heroku database
 const client = new pg.Client({
-    connectionString: process.env.DATABASE_URL || 'postgres://mbwtvqowzgfgnl:f30cee11c627b0858cc0e1de8814c1c4daaa092ba5bb485e359ab39422c8f094@ec2-52-213-119-221.eu-west-1.compute.amazonaws.com:5432/dejeaa4nhtu6sd', ssl: {rejectUnauthorized: false }});
+    connectionString: process.env.DATABASE_URL || 'secretURI', ssl: {rejectUnauthorized: false }});
 //manage error in login
 client.connect(error => {
         if (error) {
