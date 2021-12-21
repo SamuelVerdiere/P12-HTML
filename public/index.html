@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel ="stylesheet" type="text/css" href="CSS/design.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script-->
+    <link rel="shortcut icon" href="#"/>
+    <title>AXG to Salesforce</title>
+</head>
+<body>
+    <section class="top" id="toppage">
+        <h1 class="pageTitle">AXG To Salesforce UI</h1>
+        <button class="logine" id='blog'>Login</button>
+        <div class="nickname" id='nick'>Welcome, Nickname@Salesforce.com</div>
+        <button class="logout" id='bloff'>Log out</button>
+    </section>
+    <section class="tables" id="tables">
+      <div class='divContact'>
+        <div class='titre'>
+        <h2 class="contactTitle" id="contactTitle">Contacts</h2>
+        </div>
+        <table class="contacts" id='contacto' border=1> <!-- déclarer des scripts pour récupérer les contacts-->
+            <thead><tr><th>Name</th><th>Email</th><th>Phone</th></tr></thead>
+          <tbody><tr><td>Test Contact</td><td>Test Mail</td><td>555-2252</td></tr></tbody>
+            <!--tbody id="insertContacts"></tbody-->
+        </table>
+      </div>
+      <div class='divContract'>
+        <div class='titre'>
+        <h2 class="contractTitle" id="contractTitle">Contracts</h2>
+        </div>
+        <table class="contracts" id='contracta' border=1>
+            <thead><tr><th>Account</th><th>Status</th><th>Start Date</th><th>Term (months)</th></tr></thead>
+          <tbody><tr><td>Test Account</td><td>Test Draft</td><td>01/01/1970</td><td>12</td></tr></tbody>
+            <!--tbody id="insertContracts"></tbody-->
+        </table>
+      </div>
+    </section>
+      <script src="JS/logic.js"></script>
+</body>
+</html>

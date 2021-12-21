@@ -3,15 +3,21 @@
 //1. setup applications & modules
 const path = require('path');
 const express = require('express');
+const bodyparser = require('body-parser');
 const port = process.env.PORT || 3000;
 const pg = require('pg');
 const application = express();
 application.use(express.urlencoded({ extended: true }));
 //the application will use json type requests
 application.use(express.json());
+application.use(express.static('public'));
+application.use(bodyparser.json());
+application.set('port', port);
+const uri = 'postgres://mbwtvqowzgfgnl:f30cee11c627b0858cc0e1de8814c1c4daaa092ba5bb485e359ab39422c8f094@ec2-52-213-119-221.eu-west-1.compute.amazonaws.com:5432/dejeaa4nhtu6sd';
+
 //2. connect to the PostGres/Heroku database
 const client = new pg.Client({
-    connectionString: process.env.DATABASE_URL || 'secretURI', ssl: {rejectUnauthorized: false }});
+    connectionString: process.env.DATABASE_URL || uri, ssl: {rejectUnauthorized: false }});
 //manage error in login
 client.connect(error => {
         if (error) {
@@ -115,7 +121,7 @@ application.get('/contract', (request, response) => {
     }});
 
 //create a new contract
-apapplicationp.post('/contract', (request, response) => {
+application.post('/contract', (request, response) => {
     try {
         var accountName = request.body.name;
         var status = request.body.status;
@@ -162,4 +168,7 @@ application.put('/contract/:id', (request, response) => {
         console.error(error.message);
     }});
 
-application.listen(port, () => console.log(`listening to the port ${ port }`));
+const server = application.listen(port, () => {
+    const port = server.address().port;
+    console.log(`listening to the port ${ port }`);
+});
