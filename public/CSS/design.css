@@ -6,24 +6,78 @@
   .pageTitle {
     font-size: 40px;
   }
+
+  .top {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: center;
+  }
   
   #blog {
     background-color: lightgreen;
+    margin:auto;
     min-height: 40px;
     min-width: 80px;
-    margin:auto;
-    margin-bottom: 2%;
+    position:relative;
+    margin-bottom: 4%;
+    display:block;
   }
-
-.nickname {
-  margin-bottom:2%;
-}
 
   .logout {
     background-color: red;
+    margin:auto;
+    align-self: center;
     min-height: 40px;
     min-width: 80px;
+  }
+
+  .cancelform {
     margin:auto;
+    justify-self: auto;
+  }
+
+  .nickname {
+    margin:auto;
+    margin-bottom:2%;
+  }
+
+  .formcancele {
+    margin:auto;
+    justify-self:auto;
+  }
+
+  #regist {
+    background-color:#0076d2;
+    display: block;
+    height: 40px;
+    width: 80px;
+    margin: auto;
+    margin-bottom: 5%;
+  }
+
+  .loginIde, .loginMdpe {
+    display:block;
+    margin:auto;
+    margin-top: 2%;
+    justify-self: auto;
+  }
+
+  .registerFName, .registerLName,
+  .registerMail, .registerPassword {
+    display:block;
+    margin: auto;
+    margin-bottom: 3%;
+  }
+
+  .formlogine, .register {
+    justify-content:center;
+  }
+
+  .partLogin, .partRegister {
+    justify-content: center;
+    width: 25%;
   }
   
   #contactTitle, #contractTitle,
@@ -34,7 +88,7 @@
   .createContact, .createContract {
     margin-top: 2%;
     margin-bottom: 0.5%;
-   min-height: 30px;
+    min-height: 30px;
     min-width: 60px;
     background-color:#0076d2;
     position: relative;
@@ -42,10 +96,12 @@
     margin-left:auto;
     margin-right:auto;
   }
-  
-  #loginId, #loginMdp {
-    margin-top: 2%;
-    margin:auto;
+
+
+
+  .partLogin, .partRegister {
+    width: 45%;
+    justify-content: center;
   }
 
   .divContact, .divContract {

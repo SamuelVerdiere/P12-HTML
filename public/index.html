@@ -11,12 +11,28 @@
     <title>AXG to Salesforce</title>
 </head>
 <body>
+  <h1 class="pageTitle">AXG To Salesforce UI</h1>
     <section class="top" id="toppage">
-        <h1 class="pageTitle">AXG To Salesforce UI</h1>
-        <button class="logine" id='blog'>Login</button>
-        <div class="nickname" id='nick'>Welcome, Nickname@Salesforce.com</div>
-        <button class="logout" id='bloff'>Log out</button>
+      <div class="partLogin"> 
+      <form class="formlogine">
+        <button class="logine" id='blog' type="submit">Login</button>
+        <input type="text" class="loginIde" id="loginId" maxlength="30" placeholder="Email"> 
+        <input type="password" class="loginMdpe" id="loginMdp" maxlength="30" placeholder="Password"></form></div>
+      
+        <div class="partRegister">
+          <form class="registerUser"> 
+          <button class="register" id='regist'>Register</button>
+          <input type="text" class="registerFName" id="registerFName" maxlength="30" placeholder='Your first name'>
+          <input type="text" class="registerLName" id="registerLName" maxlength="30" placeholder='Your last name'>
+          <input type="text" class="registerMail" id="registerMail" maxlength="30" placeholder='Your Email'>
+          <input type="text" class="registerPassword" id="registerPassword" maxlength="30" placeholder='Choose a password'></form></div>
     </section>
+
+    <div class="nickname" id='nick'>Welcome, Nickname@Salesforce.com</div>
+    <div class="cancelform"> 
+    <form class="formcancele">  
+    <button class="logout" id='bloff' type="cancel">Log out</button></form></div>
+    
     <section class="tables" id="tables">
       <div class='divContact'>
         <div class='titre'>

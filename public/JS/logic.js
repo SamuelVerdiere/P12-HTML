@@ -8,27 +8,16 @@ const tableaux      = document.querySelector('.tables');
 const titreContact  = document.querySelector('.contactTitle');
 const titreContract = document.querySelector('.contractTitle');
 //btns and forms/inputs
-const formlogin  = document.createElement('form');
-const formcancel = document.createElement('form');
-const loginId    = document.createElement('input');
-const loginMdp   = document.createElement('input');
+const formlogin  = document.querySelector('.formlogine');
+const formcancel = document.querySelector('.formcancele');
+const loginId    = document.querySelector('.loginIde');
+const loginMdp   = document.querySelector('.loginMdpe');
 const btnlog     = document.querySelector('.logine');
 const btnoff     = document.querySelector('.logout');
-//adding classes & attributes
-formlogin.className   = 'formlogin';
-formcancel.className  = 'formcancel';
-loginId.className     = 'loginIde';
-loginMdp.className    = 'loginMdpe';
-loginId.type          = 'text';
-loginMdp.type         = 'password';
-loginId.id            = 'loginId';
-loginMdp.id           = 'loginMdp';
+const registerpart=document.querySelector('.partRegister');
+
 loginId.style.display = 'block';
 loginMdp.style.display= 'block';
-loginId.setAttribute = ('maxlength', "30");
-loginMdp.setAttribute= ('maxlength', "30");
-btnlog.type = 'submit';
-btnoff.type = 'cancel';
 //btn create inside tables
 const createCtc = document.createElement('button');
 const createCtr = document.createElement('button');
@@ -39,29 +28,24 @@ createCtr.className = 'createContract';
 var contactTable = document.getElementById('contacto');
 var contractTable = document.getElementById('contracta');
 
-/* Login part */  //+bouton create
-formlogin.appendChild(btnlog);
-formlogin.appendChild(loginId);
-formlogin.appendChild(loginMdp);
-hautPage.append(formlogin);
-
+/* Login part */
 //intial page setting
 pseudo.style.display = 'none';
 btnoff.style.display = 'none';
 tableaux.style.display = 'none';
-// var loginvalue = document.querySelector('.loginIde').value;
-// var mdpvalue = document.querySelector('.loginMdpe').value;
 
 //on click on "login" button :
 formlogin.addEventListener('submit', (e) => { 
     e.preventDefault();
     //if inputs are incorrectly filled:
     if(loginId.value === '') {
-    if(loginMdp.value === '') {
         alert('Please fill Id & Password fields.');
     }
+    if(loginMdp.value === '') {
+        alert('Please fill Id & Password fields.');
     } else if (loginId.value !== '' && loginMdp.value !== '') {
     //if not, display elements And...
+    registerpart.style.display = 'none';
     btnlog.style.display = 'none';
     loginId.style.display = 'none';
     loginMdp.style.display = 'none';
@@ -89,7 +73,7 @@ formlogin.addEventListener('submit', (e) => {
 //on click on log out button, get back to initial page:
 formcancel.addEventListener('cancel', (e) => {
     e.preventDefault();
-    btnlog.style.display = 'block';
+    btnlog.style.display = 'inline';
     loginId.style.display = 'block';
     loginMdp.style.display = 'block';
     btnoff.style.display = 'none';
