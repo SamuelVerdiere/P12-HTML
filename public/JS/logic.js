@@ -17,8 +17,8 @@ const btnoff     = document.querySelector('.logout');
 //adding classes & attributes
 formlogin.className   = 'formlogin';
 formcancel.className  = 'formcancel';
-loginId.className     = 'loginId';
-loginMdp.className    = 'loginMdp';
+loginId.className     = 'loginIde';
+loginMdp.className    = 'loginMdpe';
 loginId.type          = 'text';
 loginMdp.type         = 'password';
 loginId.id            = 'loginId';
@@ -49,16 +49,18 @@ hautPage.append(formlogin);
 pseudo.style.display = 'none';
 btnoff.style.display = 'none';
 tableaux.style.display = 'none';
-var loginvalue = document.getElementById('loginId').value;
-var mdpvalue = document.getElementById('loginMdp').value;
+// var loginvalue = document.querySelector('.loginIde').value;
+// var mdpvalue = document.querySelector('.loginMdpe').value;
 
 //on click on "login" button :
 formlogin.addEventListener('submit', (e) => { 
     e.preventDefault();
     //if inputs are incorrectly filled:
-     if(loginvalue == '' || mdpvalue =='') {
-         alert('Please fill Id & Password fields.');
-     } else {
+    if(loginId.value === '') {
+    if(loginMdp.value === '') {
+        alert('Please fill Id & Password fields.');
+    }
+    } else if (loginId.value !== '' && loginMdp.value !== '') {
     //if not, display elements And...
     btnlog.style.display = 'none';
     loginId.style.display = 'none';
@@ -67,9 +69,9 @@ formlogin.addEventListener('submit', (e) => {
     pseudo.style.display = 'inline';
     pseudo.append(formcancel);
     formcancel.appendChild(btnoff);
+    tableaux.style.display = 'block';
     //allow connection And...
-    const url = 'clips/tables/users';
-     }
+    }
     // $.ajax({
     //     url: 'path/to/server-side/script.php', /*url*/
     //     data: '', /* post data e.g name=christian&hobbie=loving */
@@ -81,7 +83,7 @@ formlogin.addEventListener('submit', (e) => {
     //     }
     // });
     //show Tables
-    tableaux.style.display = 'block';
+
 })
 
 //on click on log out button, get back to initial page:
