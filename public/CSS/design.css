@@ -77,7 +77,6 @@
 
   .partLogin, .partRegister {
     justify-content: center;
-    width: 25%;
   }
   
   #contactTitle, #contractTitle,
@@ -85,7 +84,7 @@
     display : block;
   }
   
-  .createContact, .createContract {
+  .createContacte, .createContracte {
     margin-top: 2%;
     margin-bottom: 0.5%;
     min-height: 30px;
@@ -95,9 +94,15 @@
     margin: 0;
     margin-left:auto;
     margin-right:auto;
+    margin-bottom: 2%;
   }
 
-
+  .SaveContacte, .SaveContracte {
+    background-color:#0076d2;
+    min-height: 30px;
+    min-width: 60px;
+    margin-bottom: 1%;
+  }
 
   .partLogin, .partRegister {
     width: 45%;
@@ -122,4 +127,18 @@
       margin-top:2%;
   }
 
+.ContractAccount, .StatusCtr,
+.StartDate, .EndTerm, .ContactName,
+.ContactMail, .ContactPhone {
+  display: block;
+  margin:auto;
+  margin-bottom: 2%;
+}
 
+.containsInput, .containsInpute {
+  margin:auto;
+}
+
+.foot {
+  margin-top: 40%;
+}

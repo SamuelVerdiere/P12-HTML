@@ -11,7 +11,9 @@
     <title>AXG to Salesforce</title>
 </head>
 <body>
-  <h1 class="pageTitle">AXG To Salesforce UI</h1>
+  <h1 class="pageTitle">Legarant Mobile Application</h1>
+  <p class="subtitle">Welcome to your personal interface. Please login or register.</p>
+  <img src="Legarantlogo.PNG" alt="logo" style="width:150px;height:120px;">
     <section class="top" id="toppage">
       <div class="partLogin"> 
       <form class="formlogine">
@@ -22,21 +24,31 @@
         <div class="partRegister">
           <form class="registerUser"> 
           <button class="register" id='regist'>Register</button>
-          <input type="text" class="registerFName" id="registerFName" maxlength="30" placeholder='Your first name'>
-          <input type="text" class="registerLName" id="registerLName" maxlength="30" placeholder='Your last name'>
-          <input type="text" class="registerMail" id="registerMail" maxlength="30" placeholder='Your Email'>
-          <input type="text" class="registerPassword" id="registerPassword" maxlength="30" placeholder='Choose a password'></form></div>
+          <input type="text" class="registerFName" id="registerFName" maxlength="30" placeholder='Your first name' required>
+          <input type="text" class="registerLName" id="registerLName" maxlength="30" placeholder='Your last name' required>
+          <input type="text" class="registerMail" id="registerMail" maxlength="30" placeholder='Your Email' required>
+          <input type="text" class="registerPassword" id="registerPassword" maxlength="30" placeholder='Choose a password' required></form></div>
     </section>
-
-    <div class="nickname" id='nick'>Welcome, Nickname@Salesforce.com</div>
+    
     <div class="cancelform"> 
     <form class="formcancele">  
     <button class="logout" id='bloff' type="cancel">Log out</button></form></div>
-    
+
     <section class="tables" id="tables">
+
       <div class='divContact'>
         <div class='titre'>
+
         <h2 class="contactTitle" id="contactTitle">Contacts</h2>
+        <button class="createContacte" id='createCtc' type='submit'>Create Contact</button>
+
+        <div class='containsInput' id='containsInput'>
+        <input type="text" class="ContactName" id="ContactName" maxlength="30" placeholder='Contact Name' name='Contactname' required>
+          <input type="text" class="ContactMail" id="ContactMaile" maxlength="30" placeholder='Contact Mail' name='ContactMail'>
+          <input type="text" class="ContactPhone" id="ContactPhone" maxlength="30" placeholder='Contact Phone' name='ContactPhone'>
+          <button class="SaveContacte" id='CCtc' type='submit'>Save Contact</button>
+
+        </div>
         </div>
         <table class="contacts" id='contacto' border=1> <!-- déclarer des scripts pour récupérer les contacts-->
             <thead><tr><th>Name</th><th>Email</th><th>Phone</th></tr></thead>
@@ -46,8 +58,18 @@
       </div>
       <div class='divContract'>
         <div class='titre'>
+
         <h2 class="contractTitle" id="contractTitle">Contracts</h2>
-        </div>
+        <button class="createContracte" id='createCtr' type='submit'>Create Contract</button>
+
+        <div class='containsInpute' id='containsInputxe'>
+          <input type="text" class="ContractAccount" id="ContractAccount" maxlength="30" placeholder='Account Name' name='ContractAccount' required>
+          <input type="text" class="StatusCtr" id="StatusCtr" maxlength="30" placeholder='Contract Status' name='StatusCtr'>
+          <input type="text" class="StartDate" id="StartDate" maxlength="30" placeholder='Start Date' name='StartDate'>
+          <input type="text" class="EndTerm" id="EndTerm" maxlength="30" placeholder='End Term' name='EndTerm'>
+          <button class="SaveContracte" id='CCtr' type='submit'>Save Contact</button>
+          </div>
+          </div>
         <table class="contracts" id='contracta' border=1>
             <thead><tr><th>Account</th><th>Status</th><th>Start Date</th><th>Term (months)</th></tr></thead>
           <tbody><tr><td>Test Account</td><td>Test Draft</td><td>01/01/1971</td><td>12</td></tr></tbody>
@@ -57,4 +79,5 @@
     </section>
       <script src="JS/logic.js"></script>
 </body>
+<footer class="foot">Need support ? Contact your Developer at Dev@mail.com.</footer>
 </html>
