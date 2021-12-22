@@ -28,11 +28,20 @@ client.connect(error => {
 /* get all contacts from Salesforce, byt associating HTTP verb GET to a function.
 *we map the / path sent in GET request to the function. The function receives request
 *and response objects as parameters. */
-application.get('/contact', (request, response) => {
+application.get('/contacts', (request, response) => {
     try {
         client.query('SELECT * FROM salesforce.contact').then((data) => {
             console.log(data.rows);
-            response.json(data.rows);
+            var contacts = data.rows;
+            var contactTable = '<table class="tableContact" border=1>'+
+            '<thead><tr><th>Name</th><th>Email</th><th>Phone</th></tr>'+
+            '</thead>'+
+            '<tbody>';
+            contacts.forEach(contact => {
+                  contactTable = contactTable+'<tr><td>'+contact.name+'</td><td>'+contact.email+'</td><td>'+contact.phone+'</td></tr>';              
+            });
+            contactTable = contactTable+'</tbody></table>';
+            response.send({html: contactTable});
         });
     } catch (error) {
         console.error(error.message);

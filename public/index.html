@@ -6,20 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-    <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="shortcut icon" href="#"/>
     <title>AXG to Salesforce</title>
 </head>
 <body>
   <h1 class="pageTitle">Legarant Mobile Application</h1>
-  <p class="subtitle">Welcome to your personal interface. Please login or register.</p>
+  <p class="subtitle">Welcome to the mobile Legarant/AXG Application. Please login or register.</p>
   <img src="Legarantlogo.PNG" alt="logo" style="width:150px;height:120px;">
     <section class="top" id="toppage">
       <div class="partLogin"> 
       <form class="formlogine">
         <button class="logine" id='blog' type="submit">Login</button>
-        <input type="text" class="loginIde" id="loginId" maxlength="30" placeholder="Email"> 
-        <input type="password" class="loginMdpe" id="loginMdp" maxlength="30" placeholder="Password"></form></div>
+        <input type="text" class="loginIde" id="loginId" maxlength="30" placeholder="Email" required> 
+        <input type="password" class="loginMdpe" id="loginMdp" maxlength="30" placeholder="Password" required></form></div>
       
         <div class="partRegister">
           <form class="registerUser"> 
@@ -29,7 +29,7 @@
           <input type="text" class="registerMail" id="registerMail" maxlength="30" placeholder='Your Email' required>
           <input type="text" class="registerPassword" id="registerPassword" maxlength="30" placeholder='Choose a password' required></form></div>
     </section>
-    
+
     <div class="cancelform"> 
     <form class="formcancele">  
     <button class="logout" id='bloff' type="cancel">Log out</button></form></div>
@@ -50,11 +50,7 @@
 
         </div>
         </div>
-        <table class="contacts" id='contacto' border=1> <!-- déclarer des scripts pour récupérer les contacts-->
-            <thead><tr><th>Name</th><th>Email</th><th>Phone</th></tr></thead>
-          <tbody><tr><td>Test Contact</td><td>Test Mail</td><td>555-2252</td></tr></tbody>
-            <!--tbody id="insertContacts"></tbody-->
-        </table>
+          <div id='contactTable' class='contactTable'></div>
       </div>
       <div class='divContract'>
         <div class='titre'>

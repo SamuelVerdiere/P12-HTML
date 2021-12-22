@@ -49,7 +49,9 @@ formlogin.addEventListener('submit', (e) => {
         sessionStorage.setItem(loginId.value, loginMdp.value);
         document.cookie = 'login='+loginId.value+';expires='+date+';secure';
         document.cookie = 'password='+loginMdp.value+';expires='+date+';secure';
+        getContacts();
     } 
+
     // $.ajax({
     //     url: 'path/to/server-side/script.php', /*url*/
     //     data: '', /* post data e.g name=christian&hobbie=loving */
@@ -75,20 +77,49 @@ formcancel.addEventListener('cancel', (e) => {
 
 //helpers
 
+function getContacts() {
+    $.ajax({
+        url:'/contacts',
+        method:'GET',
+        contentType:'application/json',
+        data: JSON.stringify({ 
+            email: $('#loginId').val(),
+            password: $('#loginMdp').val()
+        }), //on paramètre la requete
+        success: function(result) {
+            $('#contactTable').html(result.html);   //dans l'id contactTable le div; on place le result = le tableau du index.js & la clé du response
+
+         },    //si succes on exécute une fonction sur le résultat
+        error: function() {}
+    })
+}
+
+//request:
+/*
+function getContacts() {
+    $.ajax({
+        url:'',
+        method:'',
+        contentType:'application/json',
+        data: JSON.stringify(), //on paramètre la requete
+        success: function(result) {},    //si succes on exécute une fonction sur le résultat
+                error: function() {}
+    })
+}
+*/
+
 // function loginRequest() {
 //     let data = new FormData();
 //     data.append('name', loginId.value);
 //     data.append('pasword', loginMdp.value);
         
 //     fetch('url', {
-//     method: 'POST',
+//     method: 'GET',
 //     body: data
 //     })
 //     .then(data => data.text())
 //     .then((users) => findUser(users))
 // }
-
-
 
 function displayElementsOnConfirm() {
     registerpart.style.display = 'none';
@@ -139,7 +170,7 @@ function createRow(contactes) {
     var cell3 = row.insertCell(2);
     cell3.innerHTML = contactes.Phone;
     inputContact.style.display = 'none';
-   // contactTable.appendchild("<tr><td>"+contactes.Name+"</td><td>"+contactes.Email+"</td><td>"+contactes.Phone+"</td></tr>");
+   contactTable.appendchild("<tr><td>"+hello+"</td><td>"+Email+"</td><td>"+Phone+"</td></tr>");
 }
 })
 

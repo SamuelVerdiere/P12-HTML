@@ -142,3 +142,8 @@
 .foot {
   margin-top: 40%;
 }
+
+.tableContact{
+  border: '1';
+  margin:auto;
+}
