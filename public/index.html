@@ -39,39 +39,48 @@
       <div class='divContact'>
         <div class='titre'>
 
-        <h2 class="contactTitle" id="contactTitle">Contacts</h2>
-        <button class="createContacte" id='createCtc' type='submit'>Create Contact</button>
+        <h2 class="contactTitle" id="contactTitle">Your Contact Informations</h2>
+        <button class="createContacte" id='createCtc' type='submit'>Edit Contact</button>
 
         <div class='containsInput' id='containsInput'>
         <input type="text" class="ContactName" id="ContactName" maxlength="30" placeholder='Contact Name' name='Contactname' required>
           <input type="text" class="ContactMail" id="ContactMaile" maxlength="30" placeholder='Contact Mail' name='ContactMail'>
           <input type="text" class="ContactPhone" id="ContactPhone" maxlength="30" placeholder='Contact Phone' name='ContactPhone'>
-          <button class="SaveContacte" id='CCtc' type='submit'>Save Contact</button>
-
-        </div>
-        </div>
+          <button class="SaveContacte" id='CCtc' type='submit'>Save Contact</button></div></div>
+    
           <div id='contactTable' class='contactTable'></div>
       </div>
+
       <div class='divContract'>
         <div class='titre'>
 
         <h2 class="contractTitle" id="contractTitle">Contracts</h2>
-        <button class="createContracte" id='createCtr' type='submit'>Create Contract</button>
+        <!--button class="createContracte" id='createCtr' type='submit'>Create Contract</button-->
 
         <div class='containsInpute' id='containsInputxe'>
-          <input type="text" class="ContractAccount" id="ContractAccount" maxlength="30" placeholder='Account Name' name='ContractAccount' required>
+          <!--input type="text" class="ContractAccount" id="ContractAccount" maxlength="30" placeholder='Account Name' name='ContractAccount' required>
           <input type="text" class="StatusCtr" id="StatusCtr" maxlength="30" placeholder='Contract Status' name='StatusCtr'>
           <input type="text" class="StartDate" id="StartDate" maxlength="30" placeholder='Start Date' name='StartDate'>
           <input type="text" class="EndTerm" id="EndTerm" maxlength="30" placeholder='End Term' name='EndTerm'>
-          <button class="SaveContracte" id='CCtr' type='submit'>Save Contact</button>
+          <button class="SaveContracte" id='CCtr' type='submit'>Save Contact</button-->
           </div>
           </div>
-        <table class="contracts" id='contracta' border=1>
-            <thead><tr><th>Account</th><th>Status</th><th>Start Date</th><th>Term (months)</th></tr></thead>
-          <tbody><tr><td>Test Account</td><td>Test Draft</td><td>01/01/1971</td><td>12</td></tr></tbody>
-            <!--tbody id="insertContracts"></tbody-->
+          <div id='contractTable' class='contractTable'></div>
+          </div>
         </table>
       </div>
+
+      <div class='divProduct'>
+        <div class='titre'>
+          <h2 class='productTitle' id='productTitle'>Available Products</h2>
+        
+        </div>
+        <div id='productTable' class='productTable'></div>
+        </div>
+
+
+
+
     </section>
       <script src="JS/logic.js"></script>
 </body>

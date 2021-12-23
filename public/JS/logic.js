@@ -50,19 +50,9 @@ formlogin.addEventListener('submit', (e) => {
         document.cookie = 'login='+loginId.value+';expires='+date+';secure';
         document.cookie = 'password='+loginMdp.value+';expires='+date+';secure';
         getContacts();
+        getContracts();
+        getProducts();
     } 
-
-    // $.ajax({
-    //     url: 'path/to/server-side/script.php', /*url*/
-    //     data: '', /* post data e.g name=christian&hobbie=loving */
-    //     type: '', /* POST|GET */
-    //     complete: function(d) {
-    //         var data= d.responseTXT;
-    //         /* Here you can use the data as you like */
-    //         $('#elementid').html(data);
-    //     }
-    // });
-    //show Tables
 })
 
 //on click on log out button, get back to initial page:
@@ -78,22 +68,54 @@ formcancel.addEventListener('cancel', (e) => {
 //helpers
 
 function getContacts() {
+    console.log($('#loginMdp').val());
+    console.log($('#loginId').val());
     $.ajax({
         url:'/contacts',
         method:'GET',
         contentType:'application/json',
-        data: JSON.stringify({ 
-            email: $('#loginId').val(),
-            password: $('#loginMdp').val()
-        }), //on paramètre la requete
+            data: JSON.stringify({ 
+            password: $('#loginMdp').val(),
+            email: $('#loginId').val()
+         }), //on paramètre la requete
         success: function(result) {
             $('#contactTable').html(result.html);   //dans l'id contactTable le div; on place le result = le tableau du index.js & la clé du response
-
          },    //si succes on exécute une fonction sur le résultat
-        error: function() {}
+        error: function() {
+           alert('Unable to query Contacts. Please contact the Administrator.');
+        }
     })
 }
 
+function getContracts() {
+    $.ajax({
+        url:'/contracts',
+        method:'GET',
+        contentType:'application/json',
+        //data: JSON.stringify(), //on paramètre la requete
+        success: function(result) {
+            $('#contractTable').html(result.html);
+        },    //si succes on exécute une fonction sur le résultat
+        error: function() {
+            alert('Unable to query Contracts. Please contact the Administrator.');
+        }
+    })
+}
+
+function getProducts() {
+    $.ajax({
+        url:'/products',
+        method:'GET',
+        contentType:'application/json',
+        data: JSON.stringify(), //on paramètre la requete
+        success: function(result) {
+            $('#productTable').html(result.html);
+        },    //si succes on exécute une fonction sur le résultat
+        error: function() {
+            alert('Unable to query Products. Please contact the Administrator.');
+        }
+    })
+}
 //request:
 /*
 function getContacts() {
@@ -129,7 +151,7 @@ function displayElementsOnConfirm() {
     btnoff.style.display = 'block';
     formcancel.appendChild(btnoff);
     tableaux.style.display = 'block';
-    subtitleTop.innerHTML = 'Welcome to your personal interface,' +loginId.value+'. You are now logged in.'
+    subtitleTop.innerHTML = 'Welcome to your personal interface, ' +loginId.value+'. You are now logged in.'
 }
 
 function hideElementsOnCancel() {
@@ -148,30 +170,15 @@ const inputContact = document.querySelector('.containsInput');
 const btnCreateCtc = document.querySelector('.createContacte');
 const btnSaveCtc = document.querySelector('.SaveContacte');
 inputContact.style.display = 'none';
-
+//obtenir valeur des champs de modif
 btnCreateCtc.addEventListener('click', function() { 
 inputContact.style.display = 'block';
 })
 
 btnSaveCtc.addEventListener('click', function() { //get the list of contacts from DATABASe = same logic
-var contactes = [
-    {Name:'Testing 2', Email:'Mail Test2', Phone:'222-555-6'},
-    {Name:'Testing 3', Email:'Mail Test3', Phone:'222-555-7'},
-    {Name:'Testing 4', Email:'Mail Test4', Phone:'222-555-9'}
-];
-//on click on create button, add 1 row & 3 cells per element of the object
-contactes.forEach(createRow);
-function createRow(contactes) {
-    var row = contactTable.insertRow(-1);
-    var cell = row.insertCell(0);
-    cell.innerHTML = contactes.Name;
-    var cell2 = row.insertCell(1);
-    cell2.innerHTML = contactes.Email;
-    var cell3 = row.insertCell(2);
-    cell3.innerHTML = contactes.Phone;
-    inputContact.style.display = 'none';
+//entrer les champs de modifs dans le tableau
    contactTable.appendchild("<tr><td>"+hello+"</td><td>"+Email+"</td><td>"+Phone+"</td></tr>");
-}
+//puis POST les modifs dans sf
 })
 
 /* CONTRACTS */
@@ -179,36 +186,3 @@ const inputContract = document.querySelector('.containsInpute');
 const btnCreateCtr = document.querySelector('.createContracte');
 const btnSaveCtr = document.querySelector('.SaveContracte');
 inputContract.style.display = 'none';
-
-btnCreateCtr.addEventListener('click', function () {
-inputContract.style.display = 'block';
-})
-
-btnSaveCtr.addEventListener('click', function() {
-    var contracts = [
-        {Account:'GenePoint', Status:'Draft', StartDate:'16/12/2021', ContractTerm:'6'},
-        {Account:'Edge Communications', Status:'Activated', StartDate:'10/12/2021', ContractTerm:'12'},
-        {Account:'Dickenson plc', Status:'Draft', StartDate:'21/1/2022', ContractTerm:'10'},
-        {Account:'Pyramid Construction inc.', Status:'Activated', StartDate:'18/12/2021', ContractTerm:'9'}
-    ];
-
-    contracts.forEach(createRows);
-    function createRows(contracts) {
-        var row = contractTable.insertRow(-1);
-        var cell = row.insertCell(0);
-        cell.innerHTML = contracts.Account;
-        var cell2 = row.insertCell(1);
-        cell2.innerHTML = contracts.Status;
-        var cell3 = row.insertCell(2);
-        cell3.innerHTML = contracts.StartDate;
-        var cell4 = row.insertCell(3);
-        cell4.innerHTML = contracts.ContractTerm;
-    }
-    inputContract.style.display = 'none';
-})
-
-//faire les requêtes AJAX:
-// 1. pour la connection / login / logout
-// 2. pour afficher les données des tableaux
-// 3. modif tableaux pour modifier les données + requête AJAX
-// 4. supprimer une colonne de tableau + requête AJAX

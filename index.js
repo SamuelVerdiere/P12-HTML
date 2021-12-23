@@ -6,6 +6,7 @@ const express = require('express');
 const bodyparser = require('body-parser');
 const port = process.env.PORT || 3000;
 const pg = require('pg');
+
 const application = express();
 application.use(express.urlencoded({ extended: true }));
 //the application will use json type requests
@@ -18,34 +19,47 @@ const uri = 'postgres://mbwtvqowzgfgnl:f30cee11c627b0858cc0e1de8814c1c4daaa092ba
 //2. connect to the PostGres/Heroku database
 const client = new pg.Client({
     connectionString: process.env.DATABASE_URL || uri, ssl: {rejectUnauthorized: false }});
-//manage error in login
+
+    //manage error during connecxion to postgres database
 client.connect(error => {
         if (error) {
-            console.error('Connection error', error.stack)} 
+            console.error('There was a connection error, please see: ', error.stack)} 
         else {
-            console.log('Connected')}})
+            console.log('Connection Success')}})
 //3. Create requests
-/* get all contacts from Salesforce, byt associating HTTP verb GET to a function.
+/* get contact from Salesforce, byt associating HTTP verb GET to a function.
 *we map the / path sent in GET request to the function. The function receives request
 *and response objects as parameters. */
-application.get('/contacts', (request, response) => {
-    try {
-        client.query('SELECT * FROM salesforce.contact').then((data) => {
-            console.log(data.rows);
-            var contacts = data.rows;
-            var contactTable = '<table class="tableContact" border=1>'+
-            '<thead><tr><th>Name</th><th>Email</th><th>Phone</th></tr>'+
-            '</thead>'+
-            '<tbody>';
-            contacts.forEach(contact => {
-                  contactTable = contactTable+'<tr><td>'+contact.name+'</td><td>'+contact.email+'</td><td>'+contact.phone+'</td></tr>';              
-            });
-            contactTable = contactTable+'</tbody></table>';
-            response.send({html: contactTable});
-        });
-    } catch (error) {
-        console.error(error.message);
-}});
+
+    application.get('/contacts', (request, response) => {
+        try {
+            const query = {
+                text: 'SELECT * FROM salesforce.contact WHERE email=$1 AND password__c=$2',
+                values: [request.body.email, request.body.password]
+            }
+            client.query(query).then((data) => {
+                console.log(data.rows);
+                var contacts = data.rows;
+                if(request.body.password == contacts.password && request.body.email == contacts.email) {
+                var contactTable = '<table class="tableContact" border=1>'+
+                '<thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Password</th></tr>'+
+                '</thead>'+
+                '<tbody>';
+                contacts.forEach(contact => {
+                    console.log('request body password: '+request.body.password);
+                    console.log('contracts password: ' + contacts.password);
+                    contactTable = contactTable+'<tr><td>'+contact.name+'</td><td>'+contact.email+'</td><td>'+contact.phone+'</td><td>'+contact.password__c+'</td></tr>';              
+                });
+                contactTable = contactTable+'</tbody></table>';
+                response.send({html: contactTable});
+            } else {
+                alert('Couldn\'t find your informations in the database.');
+            }});
+        } catch (error) {
+            console.error(error.message);
+    }});
+
+
 /* create a contact after checking if it already exists
 * return sfid if the contact already exists. */
 application.post('/contact', (request, response) => {
@@ -120,12 +134,25 @@ application.get('/account', (request, response) => {
     }});
 
 // get contracts
-application.get('/contract', (request, response) => {
+application.get('/contracts', (request, response) => {
     try {
-        client.query('SELECT * FROM salesforce.contract').then((contracts) => {
-            console.log(contracts.rows);
-            response.json(contracts.rows);
-        });} catch (error) {
+        client.query('SELECT * FROM salesforce.contract')
+        .then((data) => {
+            console.log(data.rows);
+            var contracts = data.rows;
+            var contractTable = '<table class="tableContract" border=1>'+
+            '<thead><tr><th>Contract Number</th><th>Status</th><th>Start Date</th><th>Term (months)</th></tr>'+
+            '</thead>'+
+            '<tbody>';
+            contracts.forEach(contract => {
+                var mydate = contract.startdate;
+                var shortDate = mydate.toLocaleDateString('en-US');
+                contractTable = contractTable+'<tr><td>'+contract.contractnumber+'</td><td>'+contract.status+'</td><td>'+shortDate+'</td><td>'+contract.contractterm+'</td></tr>';              
+            });
+            contractTable = contractTable+'</tbody></table>';
+            response.send({html: contractTable});
+        });
+    } catch (error) {
         console.error(error.message);
     }});
 
@@ -168,12 +195,34 @@ application.put('/contract/:id', (request, response) => {
         var endTerm = request.body.contractTerm;
         var startdate = request.body.date;
         var status = request.body.status;
-        client.query('SELECT sfid FROM salesforce.account WHERE name = $1', [accountName]).then((accounts) => {
+        client.query('SELECT sfid FROM salesforce.account WHERE name = $1', [accountName])
+        .then((accounts) => {
             accountSfid = accounts.rows[0].sfid;
             client.query('UPDATE salesforce.Contract SET contractTerm = $1, startDate = $2, status = $3 WHERE accountId = $4 AND id = $5', [endTerm, startdate, status, accountSfid, id])
-            .then((data) => {
-                response.json(data);
-            });});} catch (error) {
+        .then((data) => {
+            response.json(data);
+        });});} catch (error) {
+        console.error(error.message);
+    }});
+
+// get products
+application.get('/products', (request, response) => {
+    try {
+        client.query('SELECT * FROM salesforce.product2')
+        .then((data) => {
+            console.log(data.rows);
+            var products = data.rows;
+            var productTable = '<table class="tableProduct" border=1>'+
+            '<thead><tr><th>Product Name</th><th>Product Code</th><th>Product Description</th></tr>'+
+            '</thead>'+
+            '<tbody>';
+            products.forEach(product => {
+                productTable = productTable+'<tr><td>'+product.name+'</td><td>'+product.productcode+'</td><td>'+product.description+'</td></tr>';              
+            });
+            productTable = productTable+'</tbody></table>';
+            response.send({html: productTable});
+        });
+    } catch (error) {
         console.error(error.message);
     }});
 

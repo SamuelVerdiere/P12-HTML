@@ -109,7 +109,7 @@
     justify-content: center;
   }
 
-  .divContact, .divContract {
+  .divContact, .divContract, .divProduct {
     background-color: #fefeff;
     max-width: 90%;
     position: relative;
@@ -143,7 +143,17 @@
   margin-top: 40%;
 }
 
-.tableContact{
-  border: '1';
+.tableContact, .tableContract, .tableProduct{
   margin:auto;
+  border-collapse: collapse;
+  margin-top: 1%;
+}
+
+th, td {
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
 }
