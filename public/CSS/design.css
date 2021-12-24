@@ -14,7 +14,7 @@
     text-align: center;
     justify-content: center;
   }
-  
+
   #blog {
     background-color: lightgreen;
     margin:auto;
@@ -64,8 +64,8 @@
     justify-self: auto;
   }
 
-  .registerFName, .registerLName,
-  .registerMail, .registerPassword {
+  .registerFNamee, .registerLNamee,
+  .registerMaile, .registerPassworde {
     display:block;
     margin: auto;
     margin-bottom: 3%;
@@ -105,7 +105,7 @@
   }
 
   .partLogin, .partRegister {
-    width: 45%;
+    width: 40%;
     justify-content: center;
   }
 

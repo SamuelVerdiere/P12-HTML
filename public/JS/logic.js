@@ -16,7 +16,6 @@ const loginMdp   = document.querySelector('.loginMdpe');
 const btnlog     = document.querySelector('.logine');
 const btnoff     = document.querySelector('.logout');
 const registerpart=document.querySelector('.partRegister');
-
 loginId.style.display = 'block';
 loginMdp.style.display= 'block';
 //btn create inside tables
@@ -24,6 +23,12 @@ const createCtc = document.createElement('createContacte');
 const createCtr = document.querySelector('createContracte');
 var contactTable = document.getElementById('contacto');
 var contractTable = document.getElementById('contracta');
+//register
+const formRegister = document.querySelector('.registerUser');
+var inputFname = document.querySelector('.registerFNamee');
+var inputLname = document.querySelector('.registerLNamee');
+var inputMailr = document.querySelector('.registerMaile');
+var inputPassword = document.querySelector('.registerPassworde');
 
 /* Login part */
 //intial page setting
@@ -36,12 +41,10 @@ var inputpswd = loginMdp.value;
 formlogin.addEventListener('submit', (e) => { 
     e.preventDefault();
     //if inputs are incorrectly filled:
-    if(loginId.value === '') {
+    if(loginId.value === '' || loginMdp.value === '') {
         alert('Please fill Id & Password fields.');
     }
-    if(loginMdp.value === '') {
-        alert('Please fill Id & Password fields.');
-    } else if (loginId.value !== '' && loginMdp.value !== '') {
+    else if (loginId.value !== '' && loginMdp.value !== '') {
     //if inputs are ok, allow connection and display elements...
         let date = new Date(Date.now()+ 60000);
         date = date.toUTCString();
@@ -64,6 +67,21 @@ formcancel.addEventListener('cancel', (e) => {
     sessionStorage.clear();
     hideElementsOnCancel();
 })
+
+//on click on register button, save contact in SF:
+formRegister.addEventListener('submit', (e) => {
+    //all inputs must be filled
+    if(inputFname.value === '' || inputLname.value === '') {
+        alert('Please fill First & Last name fields.');
+    } if (inputMailr.value === '' || inputPassword === '') {
+        alert('Please fill Mail & Password fields.');
+    } else if (inputFname.value !== '' && inputLname !== '' 
+              && inputMailr !== '' && inputPassword !=='') {
+        registerContact();
+        console.log('Registration complete');
+    }
+})
+
 
 //helpers
 
@@ -116,6 +134,34 @@ function getProducts() {
         }
     })
 }
+
+function registerContact() {
+    console.log($('#registerFName').val());
+    console.log($('#registerLName').val());
+    console.log($('#registerMail').val());
+    console.log($('#registerPassword').val());
+    $.ajax({
+        url:'/contacts',
+        method:'POST',
+        contentType:'application/json',
+        data: JSON.stringify({
+            firstname: $('#registerFName').val(),
+            lastname: $('#registerLName').val(),
+            email: $('#registerMail').val(),
+            password: $('#registerPassword').val()
+        }), //on paramètre la requete
+        success: function() {
+            alert('Registration complete, you can now login with your mail and password.');
+            console.log('this is it.');
+        },    //si succes on exécute une fonction sur le résultat
+        error: function() {
+            alert('Could not complete registration. Please try again later.');
+            console.log('no, it\'s not');
+        }
+    })
+}
+
+
 //request:
 /*
 function getContacts() {

@@ -30,61 +30,62 @@ client.connect(error => {
 /* get contact from Salesforce, byt associating HTTP verb GET to a function.
 *we map the / path sent in GET request to the function. The function receives request
 *and response objects as parameters. */
-
     application.get('/contacts', (request, response) => {
         try {
-            const query = {
-                text: 'SELECT * FROM salesforce.contact WHERE email=$1 AND password__c=$2',
-                values: [request.body.email, request.body.password]
-            }
-            client.query(query).then((data) => {
-                console.log(data.rows);
-                var contacts = data.rows;
-                if(request.body.password == contacts.password && request.body.email == contacts.email) {
-                var contactTable = '<table class="tableContact" border=1>'+
-                '<thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Password</th></tr>'+
-                '</thead>'+
-                '<tbody>';
-                contacts.forEach(contact => {
-                    console.log('request body password: '+request.body.password);
-                    console.log('contracts password: ' + contacts.password);
-                    contactTable = contactTable+'<tr><td>'+contact.name+'</td><td>'+contact.email+'</td><td>'+contact.phone+'</td><td>'+contact.password__c+'</td></tr>';              
-                });
-                contactTable = contactTable+'</tbody></table>';
-                response.send({html: contactTable});
-            } else {
-                alert('Couldn\'t find your informations in the database.');
-            }});
-        } catch (error) {
-            console.error(error.message);
-    }});
-
+        const query = {
+            text: 'SELECT * FROM salesforce.contact WHERE email=$1 AND password__c=$2',
+            values: [request.body.email, request.body.password]
+        }
+        client.query(query)
+        .then((data) => {
+            console.log(data.rows);
+            var contacts = data.rows;
+            if(request.body.password == contacts.password && request.body.email == contacts.email) {
+            var contactTable = '<table class="tableContact" border=1>'+
+            '<thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Password</th></tr>'+
+            '</thead>'+
+            '<tbody>';
+            contacts.forEach(contact => {
+                console.log('request body password: '+request.body.password);
+                console.log('contracts password: ' + contacts.password);
+                contactTable = contactTable+'<tr><td>'+contact.name+'</td><td>'+contact.email+'</td><td>'+contact.phone+'</td><td>'+contact.password+'</td></tr>';              
+            });
+            contactTable = contactTable+'</tbody></table>';
+            response.send({html: contactTable});
+        } else {
+            alert('Couldn\'t find your informations in the database.');
+        }});
+    } catch (error) {
+        console.error(error.message);
+}});
 
 /* create a contact after checking if it already exists
 * return sfid if the contact already exists. */
-application.post('/contact', (request, response) => {
+application.post('/contacts', (request, response) => {
     try {
         //Set variables for body request
         var mail = request.body.email;
         var lastname = request.body.lastname;
         var firstname = request.body.firstname;
-        var phone = request.body.phone;
+        var password = request.body.password;
         //Create query with parameters & prommise to create contact
         var createContact = client.query('SELECT sfid, id FROM salesforce.Contact WHERE email=$3', [mail])
         .then((contact) => {
             if (contact !== undefined) {
                 if (cont.rowCount === 0) {
-                    createContact = client.query('INSERT INTO salesforce.Contact (firstname, lastname, email, phone) VALUES ($1, $2, $3, $4) RETURNING id', [firstname, lastname,email, phone])
-                    .then((contact) => {response.json(contact.rows[0].id);
-                }); } else {
+                    console.log('before inserting');
+                    createContact = client.query('INSERT INTO salesforce.Contact (firstname, lastname, email, password) VALUES ($1, $2, $3, $4) RETURNING id', [firstname, lastname,email, password])
+                    .then((contact) => {response.json(contact.rows[0].id); });
+                } else {
+                    console.log('else inserting');
                     createContact = client.query('SELECT sfid, id FROM salesforce.Contact WHERE email = $1', [mail])
                     .then((contact) => {
-                        response.json(contact.rows[0].sfid);
-                 });}} else {
-                        response.json(createContact.rows[0]);
-            }}); } catch (error) {
+                        response.json(contact.rows[0].sfid); });}
+            } else {
+                response.json(createContact.rows[0]); }
+        })} catch (error) {
         console.error(error.message);
-    }});
+}});
 //get a contact with its ID. Query from SF, then get JSON response.
 application.get('/contact/:id', (request, response) => {
     try {
