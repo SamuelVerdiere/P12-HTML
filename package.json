@@ -2,7 +2,7 @@
   "name": "legarant-app21",
   "version": "1.0.0",
   "description": "Heroku Connect App - Legarant",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },

@@ -168,7 +168,8 @@ application.post('/contract', (request, response) => {
         client.query('SELECT sfid FROM salesforce.account WHERE name = $1', [accountName])
         .then((Accounts) => {
             accountId = Accounts.rows[0].sfid;
-            client.query('INSERT INTO salesforce.Contract (accountId, status, startDate, contractTerm) VALUES ($1, $2, $3, $4) RETURNING id',[accountId, status, startdate, endTerm])
+            client.query('INSERT INTO salesforce.Contract (accountId, status, startDate, contractTerm) VALUES ($1, $2, $3, $4) RETURNING id',
+            [accountId, status, startdate, endTerm])
         .then((Accounts) => {
             response.json(Accounts.rows[0].id);
         })})} catch (error) {
@@ -199,7 +200,8 @@ application.put('/contract/:id', (request, response) => {
         client.query('SELECT sfid FROM salesforce.account WHERE name = $1', [accountName])
         .then((accounts) => {
             accountSfid = accounts.rows[0].sfid;
-            client.query('UPDATE salesforce.Contract SET contractTerm = $1, startDate = $2, status = $3 WHERE accountId = $4 AND id = $5', [endTerm, startdate, status, accountSfid, id])
+            client.query('UPDATE salesforce.Contract SET contractTerm = $1, startDate = $2, status = $3 WHERE accountId = $4 AND id = $5', 
+            [endTerm, startdate, status, accountSfid, id])
         .then((data) => {
             response.json(data);
         });});} catch (error) {
