@@ -1,0 +1,208 @@
+{
+	"info": {
+		"_postman_id": "9c7f414f-cf85-46a1-b459-ad4fd0b1aeb2",
+		"name": "Contacts Integration",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "samverdiere@mindful-bear-gjovpb.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "SuperSecretPassword1XFpuZhmYGcJ7UhnNnacL0r12",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "3MVG9t0sl2P.pBypclDQ3H5LHjcBlNkII6ksP0GxdgYV3DQov7BPbdg8RdcZmjtKfUbba91.x.gLEqgNcfQOM",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "2F251BBAC6BE2DE976A3D82CB4C4E4511E616F560D6C179731B3438F0A233002",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://login.salesforce.com/services/oauth2/token",
+					"protocol": "https",
+					"host": [
+						"login",
+						"salesforce",
+						"com"
+					],
+					"path": [
+						"services",
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateContact",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "00D7Q000001Ndno!AQYAQF_lqORg3k9JsNGfadr1j6IOHUr_b59DYZfLuP7gsHw.sa.mwBrbSc38F_x9at4IbvztWNyseDZrqIP4rwmOu2CCQeyH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"FirstName\": \"{{FirstName}}\",\r\n\"LastName\": \"{{LastName}}\",\r\n\"Phone\": \"{{Phone}}\",\r\n\"Email\": \"{{Email}}\",\r\n\"Password__\": \"{{Password__c}}\"\r\n}"
+				},
+				"url": {
+					"raw": "https://mindful-bear-gjovpb-dev-ed.my.salesforce.com/services/apexrest/Contacts/",
+					"protocol": "https",
+					"host": [
+						"mindful-bear-gjovpb-dev-ed",
+						"my",
+						"salesforce",
+						"com"
+					],
+					"path": [
+						"services",
+						"apexrest",
+						"Contacts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateContact",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"FirstName\": {{FirstName}},\r\n    \"LastName\": {{LastName}},\r\n    \"Email\": {{Email}},\r\n    \"Password\": {{Password__c}} \r\n}"
+				},
+				"url": {
+					"raw": "https://mindful-bear-gjovpb-dev-ed.my.salesforce.com/services/apexrest/Contacts/{id}",
+					"protocol": "https",
+					"host": [
+						"mindful-bear-gjovpb-dev-ed",
+						"my",
+						"salesforce",
+						"com"
+					],
+					"path": [
+						"services",
+						"apexrest",
+						"Contacts",
+						"{id}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteContact",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "00D7Q000001Ndno!AQYAQG3WPmktJHKnz9iJF5RNH_xNwxvstd8beNOqpYSKyT4YX6I8AC2OWZlKvzgEYC4gBm4wlqj0rTkgLJaCB38qYuBGuM4D",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Status__c\": {{Status__c}}\r\n}"
+				},
+				"url": {
+					"raw": "https://mindful-bear-gjovpb-dev-ed.my.salesforce.com/services/apexrest/Contacts/{id}",
+					"protocol": "https",
+					"host": [
+						"mindful-bear-gjovpb-dev-ed",
+						"my",
+						"salesforce",
+						"com"
+					],
+					"path": [
+						"services",
+						"apexrest",
+						"Contacts",
+						"{id}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
