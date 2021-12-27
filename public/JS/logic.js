@@ -36,6 +36,9 @@ btnoff.style.display = 'none';
 tableaux.style.display = 'none';
 var inputlog  = loginId.value; 
 var inputpswd = loginMdp.value;
+var loggedContact = false;
+
+//Event Listeners
 
 //on click on "login" button :
 formlogin.addEventListener('submit', (e) => { 
@@ -46,16 +49,22 @@ formlogin.addEventListener('submit', (e) => {
     }
     else if (loginId.value !== '' && loginMdp.value !== '') {
     //if inputs are ok, allow connection and display elements...
-        let date = new Date(Date.now()+ 60000);
-        date = date.toUTCString();
-        displayElementsOnConfirm();
-        sessionStorage.setItem(loginId.value, loginMdp.value);
-        document.cookie = 'login='+loginId.value+';expires='+date+';secure';
-        document.cookie = 'password='+loginMdp.value+';expires='+date+';secure';
         getContacts();
-        getContracts();
-        getProducts();
-    } 
+        if (loggedContact === true) {
+            let date = new Date(Date.now()+ 60000);
+            date = date.toUTCString();
+            displayElementsOnConfirm();
+            sessionStorage.setItem(loginId.value, loginMdp.value);
+            document.querySelector
+            document.cookie = 'login='+loginId.value+';expires='+date+';secure';
+            document.cookie = 'password='+loginMdp.value+';expires='+date+';secure';
+            getContracts();
+            getProducts();
+        }
+        } else {
+            alert('Could not connect you. Please retry again later.');
+        }
+    
 })
 
 //on click on log out button, get back to initial page:
@@ -66,6 +75,7 @@ formcancel.addEventListener('cancel', (e) => {
 
     sessionStorage.clear();
     hideElementsOnCancel();
+    loggedContact = false;
 })
 
 //on click on register button, save contact in SF:
@@ -88,18 +98,23 @@ formRegister.addEventListener('submit', (e) => {
 function getContacts() {
     console.log($('#loginMdp').val());
     console.log($('#loginId').val());
-    $.ajax({
-        url:'/contacts',
+    $.ajax({  //setup the query
+        url:'/api/getContact',
         method:'GET',
         contentType:'application/json',
             data: JSON.stringify({ 
             password: $('#loginMdp').val(),
             email: $('#loginId').val()
-         }), //on paramètre la requete
+         }),  //if success, execute code:
         success: function(result) {
-            $('#contactTable').html(result.html);   //dans l'id contactTable le div; on place le result = le tableau du index.js & la clé du response
-         },    //si succes on exécute une fonction sur le résultat
+            //allow connection
+            loggedContact = true;
+            //in the contactTable Id, we place the result as HTML: it is the table from index.js & response key
+            $('#contactTable').html(result.html); 
+         },
         error: function() {
+            //prevent connexion and display error
+            loggedContact = false;
            alert('Unable to query Contacts. Please contact the Administrator.');
         }
     })

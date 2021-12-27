@@ -1,11 +1,11 @@
-//find resources here : https://node-postgres.com/api/client
-/*This  index connects to Heroku Database and perform operations with Salesforce Database via queries. */
+/*This connects to Heroku Database and perform operations with Salesforce Database via queries. */
 //1. setup applications & modules
 const path = require('path');
 const express = require('express');
 const bodyparser = require('body-parser');
 const port = process.env.PORT || 3000;
 const pg = require('pg');
+const { finished } = require('stream');
 
 const application = express();
 application.use(express.urlencoded({ extended: true }));
@@ -30,34 +30,39 @@ client.connect(error => {
 /* get contact from Salesforce, byt associating HTTP verb GET to a function.
 *we map the / path sent in GET request to the function. The function receives request
 *and response objects as parameters. */
-    application.get('/contacts', (request, response) => {
-        try {
+application.post('/api/getContact', (request, response) => {
         const query = {
-            text: 'SELECT * FROM salesforce.contact WHERE email=$1 AND password__c=$2',
+            text: 'SELECT * FROM salesforce.Contact where password__c=$1 AND email=$2',
             values: [request.body.email, request.body.password]
         }
         client.query(query)
         .then((data) => {
-            console.log(data.rows);
-            var contacts = data.rows;
-            if(request.body.password == contacts.password && request.body.email == contacts.email) {
-            var contactTable = '<table class="tableContact" border=1>'+
+            console.log('this are the data rows for mails: ' + data.rows[0].mail);
+            var contacts = data.rows[0];
+             var getemailbdd = data.rows[0].find(email);
+            //var getemailquery = 
+            // var pass = data.rows[1].password;
+            // var typedmail = request.body.email;
+            // var typedpass = request.body.password;
+            //if(findmail === typedmail) {
+            // if(request.body.password == contacts.password && request.body.email == contacts.email) {
+            var contactTable = '<table class="tableContact" id="tableConto" border=1>'+
             '<thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Password</th></tr>'+
             '</thead>'+
             '<tbody>';
             contacts.forEach(contact => {
-                console.log('request body password: '+request.body.password);
-                console.log('contracts password: ' + contacts.password);
-                contactTable = contactTable+'<tr><td>'+contact.name+'</td><td>'+contact.email+'</td><td>'+contact.phone+'</td><td>'+contact.password+'</td></tr>';              
+                console.log('request body password: '+email);
+                console.log('contracts password: ' + pass);
+                contactTable = contactTable+'<tr><td>contactname</td><td>'+contact.email+'</td><td>contact.phone+</td><td>'+contact[0].password+'</td></tr>';              
             });
             contactTable = contactTable+'</tbody></table>';
             response.send({html: contactTable});
-        } else {
-            alert('Couldn\'t find your informations in the database.');
-        }});
-    } catch (error) {
-        console.error(error.message);
-}});
+        
+        // } else {
+        //     alert('Couldn\'t find your informations in the database.');
+       // }
+    });
+});
 
 /* create a contact after checking if it already exists
 * return sfid if the contact already exists. */
@@ -69,7 +74,7 @@ application.post('/contacts', (request, response) => {
         var firstname = request.body.firstname;
         var password = request.body.password;
         //Create query with parameters & prommise to create contact
-        var createContact = client.query('SELECT sfid, id FROM salesforce.Contact WHERE email=$3', [mail])
+        var createContact = client.query('SELECT sfid, id FROM salesforce.Contact WHERE email=$1', [mail])
         .then((contact) => {
             if (contact !== undefined) {
                 if (cont.rowCount === 0) {
