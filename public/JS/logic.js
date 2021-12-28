@@ -100,17 +100,21 @@ function getContacts() {
     console.log($('#loginId').val());
     $.ajax({  //setup the query
         url:'/api/getContact',
-        method:'GET',
+        method:'POST',
         contentType:'application/json',
             data: JSON.stringify({ 
             password: $('#loginMdp').val(),
             email: $('#loginId').val()
          }),  //if success, execute code:
-        success: function(result) {
+        success: function(contact) {
             //allow connection
             loggedContact = true;
+            $('#namefromServ').text(contact.name);
+            $('#emailfromServ').text(contact.email);
+            $('#phonefromServ').text(contact.phone);
+            $('#passfromServ').text(contact.password__c);
             //in the contactTable Id, we place the result as HTML: it is the table from index.js & response key
-            $('#contactTable').html(result.html); 
+            //$('#contactTable').html(result.html); 
          },
         error: function() {
             //prevent connexion and display error
@@ -156,7 +160,7 @@ function registerContact() {
     console.log($('#registerMail').val());
     console.log($('#registerPassword').val());
     $.ajax({
-        url:'/contacts',
+        url:'/api/contacts',
         method:'POST',
         contentType:'application/json',
         data: JSON.stringify({

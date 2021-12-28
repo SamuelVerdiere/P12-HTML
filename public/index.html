@@ -48,7 +48,14 @@
           <input type="text" class="ContactPhone" id="ContactPhone" maxlength="20" placeholder='Contact Phone' name='ContactPhone'>
           <button class="SaveContacte" id='CCtc' type='submit'>Save Contact</button></div></div>
     
-          <div id='contactTable' class='contactTable'></div>
+          <div id='contactTable' class='contactTable'>
+            <table>  
+            <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Password</th></tr></thead>
+              <tbody> 
+                <tr><td><span id="namefromServ"></span></td><td><span id="emailfromServ"></span></td><td><span id="phonefromServ"></span></td><td><span id="passfromServ"></span></span></td></tr>
+              </tbody>
+          </table>
+          </div>
       </div>
 
       <div class='divContract'>
