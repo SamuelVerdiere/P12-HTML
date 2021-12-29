@@ -85,7 +85,6 @@ formRegister.addEventListener('submit', (e) => {
     } else if (inputFname.value !== '' && inputLname !== '' 
               && inputMailr !== '' && inputPassword !=='') {
         registerContact();
-        console.log('Registration complete');
     }
 })
 
@@ -108,7 +107,7 @@ function getContacts() {
             $('#emailfromServ').text(contact.email);
             $('#phonefromServ').text(contact.phone);
             $('#passfromServ').text(contact.password__c);
-            LoggedcontactId = contact.id;
+            LoggedcontactId = contact.sfid;
          },
         error: function() {
             //prevent connexion and display error
@@ -160,7 +159,7 @@ function registerContact() {
             password: $('#registerPassword').val()
         }), //on paramètre la requete
         success: function(result) {
-            alert('Registration complete, '+result.firstname+' '+result.lastname+' you can now login with your mail and password.');
+            console.log('Registration complete, '+result.firstname+' '+result.lastname+ ',' +result.externalmail__c+' you can now login with your mail and password.');
             console.log('this is it.');
         },    //si succes on exécute une fonction sur le résultat
         error: function() {
@@ -220,7 +219,7 @@ inputContract.style.display = 'none';
 
 function updateContact() {
     $.ajax({
-        url:'/contact' + '/' + LoggedcontactId,
+        url:'/contact' + '/:' + LoggedcontactId,
         method:'PUT',
         contentType:'application/json',
         data:JSON.stringify({

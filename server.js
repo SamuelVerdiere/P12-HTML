@@ -62,7 +62,7 @@ app.post('/api/contacts', (req, response) => {
             //console.log('this is the contact : '+ JSON.stringify(contact));
             if (contact !== undefined) {
                 if (contact.rowCount === 0) {
-                    createContact = client.query('INSERT INTO salesforce.Contact (firstname, lastname, email, password__c) VALUES ($1, $2, $3, $4) RETURNING id', [firstname, lastname,email, password])
+                    createContact = client.query('INSERT INTO salesforce.Contact (firstname, lastname, email, password__c, externalmail__c) VALUES ($1, $2, $3, $4, $3) RETURNING id', [firstname, lastname,email, password])
                     .then((contact) => {response.json(contact.rows[0].id); });
                 } else {
                     createContact = client.query('SELECT sfid, id FROM salesforce.Contact WHERE email = $1', [email])
@@ -98,8 +98,8 @@ app.get('/contact/:id', (req, response) => {
     }});
 
 //update a contact
-app.put('/contact/id', (req, response) => {
-    var id = req.params.id;
+app.put('/contact/:sfid', (req, response) => {
+    var { sfid } = req.params.sfid;
     try {
         //var { sfid } = req.params.sfid;
         var firstname = req.body.firstname;
@@ -107,12 +107,12 @@ app.put('/contact/id', (req, response) => {
         var email = req.body.email;
         var phone = req.body.phone;
         var password = req.body.password;
-        client.query('UPDATE salesforce.Contact SET firstname = $1, lastname= $2, email = $3, phone = $4, password__c = $5 WHERE id = $6', 
-        [firstname, lastname, email, phone, password, id])
+        client.query('UPDATE salesforce.Contact SET firstname = $1, lastname= $2, email = $3, phone = $4, password__c = $5 WHERE sfid = $6', 
+        [firstname, lastname, email, phone, password, sfid])
         .then((contact) => {
             console.log('row count :' + contact.rowCount);
             console.log('WHAT WE WANT TO SEE: ' +JSON.stringify(contact));
-            console.log('heres the SFID from server : ' + req.params.id);
+            console.log('heres the SFID from server : ' + req.params.sfid);
             console.log('heres the password: ' + req.body.password);
             response.json(contact);
         });} catch (err) {
@@ -186,7 +186,7 @@ app.post('/contract', (req, response) => {
 //get a contract by its id
 app.get('/contract/:id', (req, response) => {
     try {
-        const { id } = req.params;
+        const { id } = req.params.id;
         client.query('SELECT * FROM salesforce.contract WHERE id = $1', [id])
         .then((contracts) => {
             console.log(contracts.rows[0]);
@@ -198,7 +198,7 @@ app.get('/contract/:id', (req, response) => {
 //update contract by id and sfid
 app.put('/contract/:id', (req, response) => {
     try {
-        const { id } = c.params.Route.get("Id");
+        const { id } = req.params.id;
          //req.params;
         var accountName = req.body.name;
         var accountSfid = '';
