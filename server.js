@@ -7,14 +7,14 @@ const port = process.env.PORT || 3000;
 const pg = require('pg');
 const { finished } = require('stream');
 
-const application = express();
-application.use(express.urlencoded({ extended: true }));
+const app = express();
+app.use(express.urlencoded({ extended: true }));
 //the application will use json type requests
-application.use(express.json());
-application.use(express.static('public'));
-application.use(bodyparser.json());
-application.set('port', port);
-const uri = 'postgres://whevfeqldpwmjv:d4fcb29700f407aca3aa3a49e77b7ef8bce54b453ac522ada9ac562f139e94c0@ec2-52-213-119-221.eu-west-1.compute.amazonaws.com:5432/d234j6v0uqs44o';
+app.use(express.json());
+app.use(express.static('public'));
+app.use(bodyparser.json());
+app.set('port', port);
+const uri = 'postgres://vrhbtqjgmbqlwx:7ad19865c05891f1cc99705bb18d52ab0136585c9f44b54ccdc89f65274a536b@ec2-52-211-158-144.eu-west-1.compute.amazonaws.com:5432/d6a0dsh43jmsrg';
 
 //2. connect to the PostGres/Heroku database
 const client = new pg.Client({
@@ -26,13 +26,13 @@ client.connect(error => {
             console.error('There was a connection error, please see: ', error.stack)} 
         else {
             console.log('Connection Success')}})
-//3. Create requests
+//3. Create routes and queries
 /* get contact from Salesforce, byt associating HTTP verb GET to a function.
 *we map the / path sent in GET request to the function. The function receives request
 *and response objects as parameters. */
-application.post('/api/getContact', (request, response) => {
-    var lemail = request.body.email;
-    var lepass = request.body.password;
+app.post('/api/getContact', (req, response) => {
+    var lemail = req.body.email;
+    var lepass = req.body.password;
     console.log('from js mail : '+ lemail);
     console.log('from js pass : ' + lepass);
     try {
@@ -49,24 +49,22 @@ application.post('/api/getContact', (request, response) => {
 
 /* create a contact after checking if it already exists
 * return sfid if the contact already exists. */
-application.post('/api/contacts', (request, response) => {
+app.post('/api/contacts', (req, response) => {
     try {
         //Set variables for body request
-        var email = request.body.email;
-        var lastname = request.body.lastname;
-        var firstname = request.body.firstname;
-        var password = request.body.password;
+        var email = req.body.email;
+        var lastname = req.body.lastname;
+        var firstname = req.body.firstname;
+        var password = req.body.password;
         //Create query with parameters & prommise to create contact
         var createContact = client.query('SELECT sfid, id FROM salesforce.Contact WHERE email=$1', [email])
         .then((contact) => {
-            console.log('this is the contact : '+ JSON.stringify(contact));
+            //console.log('this is the contact : '+ JSON.stringify(contact));
             if (contact !== undefined) {
                 if (contact.rowCount === 0) {
-                    console.log('before inserting');
                     createContact = client.query('INSERT INTO salesforce.Contact (firstname, lastname, email, password__c) VALUES ($1, $2, $3, $4) RETURNING id', [firstname, lastname,email, password])
                     .then((contact) => {response.json(contact.rows[0].id); });
                 } else {
-                    console.log('else inserting');
                     createContact = client.query('SELECT sfid, id FROM salesforce.Contact WHERE email = $1', [email])
                     .then((contact) => {
                         response.json(contact.rows[0]); });}
@@ -76,9 +74,9 @@ application.post('/api/contacts', (request, response) => {
         console.error(error.message);
 }});
 //get a contact with its ID. Query from SF, then get JSON response.
-application.get('/contact/:id', (request, response) => {
+app.get('/contact/id', (req, response) => {
     try {
-        const { id } = request.params;
+        const { id } = req.params;
         client.query('SELECT * FROM salesforce.contact WHERE id = $1', [id])
         .then((contact) => {
             console.log(contact.rows[0]);
@@ -88,9 +86,9 @@ application.get('/contact/:id', (request, response) => {
     }});
 
 //get a contact with its ID. Query from SF, then get JSON response.
-application.get('/contact/:id', (request, response) => {
+app.get('/contact/:id', (req, response) => {
     try {
-        const { id } = request.params;
+        const { id } = req.params;
         client.query('SELECT * FROM salesforce.contact WHERE id = $1', [id])
         .then((contact) => {
             console.log(contact.rows[0]);
@@ -100,24 +98,32 @@ application.get('/contact/:id', (request, response) => {
     }});
 
 //update a contact
-application.put('/contact/:id', (request, response) => {
+app.put('/contact/id', (req, response) => {
+    var id = req.params.id;
     try {
-        const { id } = request.params;
-        var firstname = request.body.firstname;
-        var lastname = request.body.lastname;
-        var email = request.body.email;
-        var phone = request.body.phone;
-        client.query('UPDATE salesforce.Contact SET firstname = $1, lastname = $2, email = $3, phone = $4 WHERE id = $5', [firstname, lastname, email, phone, id]).then((contact) => {
-            console.log(contact);
+        //var { sfid } = req.params.sfid;
+        var firstname = req.body.firstname;
+        var lastname = req.body.lastname;
+        var email = req.body.email;
+        var phone = req.body.phone;
+        var password = req.body.password;
+        client.query('UPDATE salesforce.Contact SET firstname = $1, lastname= $2, email = $3, phone = $4, password__c = $5 WHERE id = $6', 
+        [firstname, lastname, email, phone, password, id])
+        .then((contact) => {
+            console.log('row count :' + contact.rowCount);
+            console.log('WHAT WE WANT TO SEE: ' +JSON.stringify(contact));
+            console.log('heres the SFID from server : ' + req.params.id);
+            console.log('heres the password: ' + req.body.password);
             response.json(contact);
         });} catch (err) {
         console.error(err.message);
+        console.log('ERR WHAT WE WANT TO SEE: ' +contact);
     }});
 
 //deactivate a contact by setting custom field to false
-application.patch('/contact/:id', (request, response) => {
+app.patch('/contact/:id', (req, response) => {
     try {
-        const { id } = request.params;
+        const { id } = req.params;
         client.query('UPDATE salesforce.Contact SET Status__c = false WHERE id = $1',
             [id]).then((contact) => {
                 response.json(contact);
@@ -126,7 +132,7 @@ application.patch('/contact/:id', (request, response) => {
     }});
 
 // get accounts
-application.get('/account', (request, response) => {
+app.get('/account', (req, response) => {
     try {
         client.query('SELECT * FROM salesforce.account').then((accounts) => {
             console.log(accounts.rows);
@@ -136,7 +142,7 @@ application.get('/account', (request, response) => {
     }});
 
 // get contracts
-application.get('/contracts', (request, response) => {
+app.get('/contracts', (req, response) => {
     try {
         client.query('SELECT * FROM salesforce.contract')
         .then((data) => {
@@ -159,12 +165,12 @@ application.get('/contracts', (request, response) => {
     }});
 
 //create a new contract
-application.post('/contract', (request, response) => {
+app.post('/contract', (req, response) => {
     try {
-        var accountName = request.body.name;
-        var status = request.body.status;
-        var startdate = request.body.date;
-        var endTerm = request.body.contractTerm;
+        var accountName = req.body.name;
+        var status = req.body.status;
+        var startdate = req.body.date;
+        var endTerm = req.body.contractTerm;
         var accountId = '';
         client.query('SELECT sfid FROM salesforce.account WHERE name = $1', [accountName])
         .then((Accounts) => {
@@ -178,9 +184,9 @@ application.post('/contract', (request, response) => {
     }});
 
 //get a contract by its id
-application.get('/contract/:id', (request, response) => {
+app.get('/contract/:id', (req, response) => {
     try {
-        const { id } = request.params;
+        const { id } = req.params;
         client.query('SELECT * FROM salesforce.contract WHERE id = $1', [id])
         .then((contracts) => {
             console.log(contracts.rows[0]);
@@ -190,14 +196,15 @@ application.get('/contract/:id', (request, response) => {
     }});
 
 //update contract by id and sfid
-application.put('/contract/:id', (request, response) => {
+app.put('/contract/:id', (req, response) => {
     try {
-        const { id } = request.params;
-        var accountName = request.body.name;
+        const { id } = c.params.Route.get("Id");
+         //req.params;
+        var accountName = req.body.name;
         var accountSfid = '';
-        var endTerm = request.body.contractTerm;
-        var startdate = request.body.date;
-        var status = request.body.status;
+        var endTerm = req.body.contractTerm;
+        var startdate = req.body.date;
+        var status = req.body.status;
         client.query('SELECT sfid FROM salesforce.account WHERE name = $1', [accountName])
         .then((accounts) => {
             accountSfid = accounts.rows[0].sfid;
@@ -210,7 +217,7 @@ application.put('/contract/:id', (request, response) => {
     }});
 
 //get products
-application.get('/products', (request, response) => {
+app.get('/products', (req, response) => {
     try {
         client.query('SELECT * FROM salesforce.product2')
         .then((data) => {
@@ -230,7 +237,7 @@ application.get('/products', (request, response) => {
         console.error(error.message);
     }});
 
-const server = application.listen(port, () => {
+const server = app.listen(port, () => {
     const port = server.address().port;
     console.log(`listening to the port ${ port }`);
 });

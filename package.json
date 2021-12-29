@@ -4,14 +4,14 @@
   "description": "Heroku Connect App - Legarant",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node ./server.js"
   },
   "author": "Samuel Verdière",
   "licence": "ISC",
   "dependencies": {
     "body-parser": "^1.19.1",
     "bootstrap": "^5.1.3",
-    "express": "^4.17.2",
+    "express": "^6.14.12",
     "jsforce": "$1.10.1",
     "pg": "^8.7.1"
   }

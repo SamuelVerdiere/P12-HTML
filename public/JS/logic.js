@@ -55,9 +55,6 @@ formlogin.addEventListener('submit', (e) => {
             date = date.toUTCString();
             displayElementsOnConfirm();
             sessionStorage.setItem(loginId.value, loginMdp.value);
-            document.querySelector
-            document.cookie = 'login='+loginId.value+';expires='+date+';secure';
-            document.cookie = 'password='+loginMdp.value+';expires='+date+';secure';
             getContracts();
             getProducts();
         }
@@ -94,10 +91,8 @@ formRegister.addEventListener('submit', (e) => {
 
 
 //helpers
-
+var LoggedcontactId;
 function getContacts() {
-    console.log($('#loginMdp').val());
-    console.log($('#loginId').val());
     $.ajax({  //setup the query
         url:'/api/getContact',
         method:'POST',
@@ -113,8 +108,7 @@ function getContacts() {
             $('#emailfromServ').text(contact.email);
             $('#phonefromServ').text(contact.phone);
             $('#passfromServ').text(contact.password__c);
-            //in the contactTable Id, we place the result as HTML: it is the table from index.js & response key
-            //$('#contactTable').html(result.html); 
+            LoggedcontactId = contact.id;
          },
         error: function() {
             //prevent connexion and display error
@@ -155,10 +149,6 @@ function getProducts() {
 }
 
 function registerContact() {
-    console.log($('#registerFName').val());
-    console.log($('#registerLName').val());
-    console.log($('#registerMail').val());
-    console.log($('#registerPassword').val());
     $.ajax({
         url:'/api/contacts',
         method:'POST',
@@ -169,8 +159,8 @@ function registerContact() {
             email: $('#registerMail').val(),
             password: $('#registerPassword').val()
         }), //on paramètre la requete
-        success: function() {
-            alert('Registration complete, you can now login with your mail and password.');
+        success: function(result) {
+            alert('Registration complete, '+result.firstname+' '+result.lastname+' you can now login with your mail and password.');
             console.log('this is it.');
         },    //si succes on exécute une fonction sur le résultat
         error: function() {
@@ -179,34 +169,6 @@ function registerContact() {
         }
     })
 }
-
-
-//request:
-/*
-function getContacts() {
-    $.ajax({
-        url:'',
-        method:'',
-        contentType:'application/json',
-        data: JSON.stringify(), //on paramètre la requete
-        success: function(result) {},    //si succes on exécute une fonction sur le résultat
-                error: function() {}
-    })
-}
-*/
-
-// function loginRequest() {
-//     let data = new FormData();
-//     data.append('name', loginId.value);
-//     data.append('pasword', loginMdp.value);
-        
-//     fetch('url', {
-//     method: 'GET',
-//     body: data
-//     })
-//     .then(data => data.text())
-//     .then((users) => findUser(users))
-// }
 
 function displayElementsOnConfirm() {
     registerpart.style.display = 'none';
@@ -242,7 +204,8 @@ inputContact.style.display = 'block';
 
 btnSaveCtc.addEventListener('click', function() { //get the list of contacts from DATABASe = same logic
 //entrer les champs de modifs dans le tableau
-   contactTable.appendchild("<tr><td>"+hello+"</td><td>"+Email+"</td><td>"+Phone+"</td></tr>");
+    updateContact()
+    console.log('here: '+ LoggedcontactId);
 //puis POST les modifs dans sf
 })
 
@@ -251,3 +214,32 @@ const inputContract = document.querySelector('.containsInpute');
 const btnCreateCtr = document.querySelector('.createContracte');
 const btnSaveCtr = document.querySelector('.SaveContracte');
 inputContract.style.display = 'none';
+
+
+//helper ajax
+
+function updateContact() {
+    $.ajax({
+        url:'/contact' + '/' + LoggedcontactId,
+        method:'PUT',
+        contentType:'application/json',
+        data:JSON.stringify({
+          //  id: LoggedcontactId,
+            firstname: $('#ContactFName').val(),
+            lastname: $('#ContactLName').val(),
+            email: $('#ContactMaile').val(),
+            phone: $('#ContactPhone').val(),
+            password: $('#ContactPassw').val()
+        }), //on paramètre la requete
+        success: function(result) {
+            alert('Congratulations, your informations were updated.');
+            console.log('the result: '+ JSON.stringify(result));
+            console.log('ok this is the id: ' + LoggedcontactId);
+
+        },    //si succes on exécute une fonction sur le résultat
+        error: function() {
+            console.log('error this is the id: ' + LoggedcontactId);
+            alert('Could not complete updating your data. Please try again later.');
+        }
+    })
+}

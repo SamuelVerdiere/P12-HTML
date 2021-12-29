@@ -128,8 +128,8 @@
   }
 
 .ContractAccount, .StatusCtr,
-.StartDate, .EndTerm, .ContactName,
-.ContactMail, .ContactPhone {
+.StartDate, .EndTerm, .ContactFName, .ContactLName,
+.ContactMail, .ContactPhone, .ContactPassw {
   display: block;
   margin:auto;
   margin-bottom: 2%;
@@ -143,7 +143,7 @@
   margin-top: 40%;
 }
 
-.tableContact, .tableContract, .tableProduct{
+.tableContact, .tableContract, .tableProduct, #tableForContact, .contactTable{
   margin:auto;
   border-collapse: collapse;
   margin-top: 1%;

@@ -43,13 +43,15 @@
         <button class="createContacte" id='createCtc' type='submit'>Edit Contact</button>
 
         <div class='containsInput' id='containsInput'>
-        <input type="text" class="ContactName" id="ContactName" maxlength="20" placeholder='Contact Name' name='Contactname' required>
-          <input type="text" class="ContactMail" id="ContactMaile" maxlength="20" placeholder='Contact Mail' name='ContactMail'>
-          <input type="text" class="ContactPhone" id="ContactPhone" maxlength="20" placeholder='Contact Phone' name='ContactPhone'>
+        <input type="text" class="ContactFName" id="ContactFName" maxlength="20" placeholder='Change First Name' name='ContactFname' required>
+        <input type="text" class="ContactLName" id="ContactLName" maxlength="20" placeholder='Change Last Name' name='ContactLname' required>
+          <input type="text" class="ContactMail" id="ContactMaile" maxlength="20" placeholder='Change Mail' name='ContactMail'>
+          <input type="text" class="ContactPhone" id="ContactPhone" maxlength="20" placeholder='Change Phone' name='ContactPhone'>
+          <input type="password" class="ContactPassw" id="ContactPassw" maxlength="20" placeholder='Change Password' name='ContactPassw'>
           <button class="SaveContacte" id='CCtc' type='submit'>Save Contact</button></div></div>
     
           <div id='contactTable' class='contactTable'>
-            <table>  
+            <table id="tableForContact" border=1>  
             <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Password</th></tr></thead>
               <tbody> 
                 <tr><td><span id="namefromServ"></span></td><td><span id="emailfromServ"></span></td><td><span id="phonefromServ"></span></td><td><span id="passfromServ"></span></span></td></tr>
@@ -62,14 +64,8 @@
         <div class='titre'>
 
         <h2 class="contractTitle" id="contractTitle">Contracts</h2>
-        <!--button class="createContracte" id='createCtr' type='submit'>Create Contract</button-->
 
         <div class='containsInpute' id='containsInputxe'>
-          <!--input type="text" class="ContractAccount" id="ContractAccount" maxlength="30" placeholder='Account Name' name='ContractAccount' required>
-          <input type="text" class="StatusCtr" id="StatusCtr" maxlength="30" placeholder='Contract Status' name='StatusCtr'>
-          <input type="text" class="StartDate" id="StartDate" maxlength="30" placeholder='Start Date' name='StartDate'>
-          <input type="text" class="EndTerm" id="EndTerm" maxlength="30" placeholder='End Term' name='EndTerm'>
-          <button class="SaveContracte" id='CCtr' type='submit'>Save Contact</button-->
           </div>
           </div>
           <div id='contractTable' class='contractTable'></div>
