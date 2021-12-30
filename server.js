@@ -6,6 +6,7 @@ const bodyparser = require('body-parser');
 const port = process.env.PORT || 3000;
 const pg = require('pg');
 const { finished } = require('stream');
+const { query } = require('express');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -99,7 +100,8 @@ app.get('/contact/:id', (req, response) => {
 
 //update a contact
 app.put('/contact/:sfid', (req, response) => {
-    var { sfid } = req.params.sfid;
+    var sfid = req.params.sfid;
+    console.log('BEFORE QUERY SFID: ' +  sfid);
     try {
         //var { sfid } = req.params.sfid;
         var firstname = req.body.firstname;
@@ -107,17 +109,13 @@ app.put('/contact/:sfid', (req, response) => {
         var email = req.body.email;
         var phone = req.body.phone;
         var password = req.body.password;
-        client.query('UPDATE salesforce.Contact SET firstname = $1, lastname= $2, email = $3, phone = $4, password__c = $5 WHERE sfid = $6', 
+        client.query('UPDATE salesforce.contact SET firstname = $1, lastname= $2, email = $3, phone = $4, password__c = $5 WHERE sfid = $6 RETURNING sfid', 
         [firstname, lastname, email, phone, password, sfid])
         .then((contact) => {
-            console.log('row count :' + contact.rowCount);
-            console.log('WHAT WE WANT TO SEE: ' +JSON.stringify(contact));
-            console.log('heres the SFID from server : ' + req.params.sfid);
-            console.log('heres the password: ' + req.body.password);
+            console.log('REQ QUERY: ' + JSON.stringify(req.query));
             response.json(contact);
         });} catch (err) {
         console.error(err.message);
-        console.log('ERR WHAT WE WANT TO SEE: ' +contact);
     }});
 
 //deactivate a contact by setting custom field to false

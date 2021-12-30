@@ -219,7 +219,7 @@ inputContract.style.display = 'none';
 
 function updateContact() {
     $.ajax({
-        url:'/contact' + '/:' + LoggedcontactId,
+        url:'/contact' + '/' + LoggedcontactId,
         method:'PUT',
         contentType:'application/json',
         data:JSON.stringify({
