@@ -16,8 +16,6 @@ const loginMdp   = document.querySelector('.loginMdpe');
 const btnlog     = document.querySelector('.logine');
 const btnoff     = document.querySelector('.logout');
 const registerpart=document.querySelector('.partRegister');
-loginId.style.display = 'block';
-loginMdp.style.display= 'block';
 //btn create inside tables
 const createCtc = document.createElement('createContacte');
 const createCtr = document.querySelector('createContracte');
@@ -37,12 +35,13 @@ var updatePass = document.getElementById('#ContactPassw');
 var updatePhone = document.getElementById('#ContactPhone');
 /* Login part */
 //intial page setting
+loginId.style.display = 'block';
+loginMdp.style.display= 'block';
 btnoff.style.display = 'none';
 tableaux.style.display = 'none';
 var inputlog  = loginId.value; 
 var inputpswd = loginMdp.value;
 var loggedContact = false;
-
 //Event Listeners
 
 //on click on "login" button :
@@ -52,21 +51,18 @@ formlogin.addEventListener('submit', (e) => {
     if(loginId.value === '' || loginMdp.value === '') {
         alert('Please fill Id & Password fields.');
     }
-    else if (loginId.value !== '' && loginMdp.value !== '') {
+    else {
     //if inputs are ok, allow connection and display elements...
         getContacts();
         if (loggedContact === true) {
-            let date = new Date(Date.now()+ 60000);
-            date = date.toUTCString();
             displayElementsOnConfirm();
-            sessionStorage.setItem(loginId.value, loginMdp.value);
             getContracts();
             getProducts();
-        }
         } else {
             alert('Could not connect you. Please retry again later.');
         }
     
+    }
 })
 
 //on click on log out button, get back to initial page:
@@ -137,10 +133,9 @@ function getContracts() {
         url:'/contracts',
         method:'GET',
         contentType:'application/json',
-        //data: JSON.stringify(), //on paramètre la requete
         success: function(result) {
             $('#contractTable').html(result.html);
-        },    //si succes on exécute une fonction sur le résultat
+        },
         error: function() {
             alert('Unable to query Contracts. Please contact the Administrator.');
         }
@@ -152,10 +147,10 @@ function getProducts() {
         url:'/products',
         method:'GET',
         contentType:'application/json',
-        data: JSON.stringify(), //on paramètre la requete
+        data: JSON.stringify(),
         success: function(result) {
             $('#productTable').html(result.html);
-        },    //si succes on exécute une fonction sur le résultat
+        },
         error: function() {
             alert('Unable to query Products. Please contact the Administrator.');
         }
@@ -172,10 +167,10 @@ function registerContact() {
             lastname: $('#registerLName').val(),
             email: $('#registerMail').val(),
             password: $('#registerPassword').val()
-        }), //on paramètre la requete
+        }),
         success: function(result) {
             console.log('Registration complete, '+result.firstname+' '+result.lastname+ ',' +result.externalmail__c+' you can now login with your mail and password.');
-        },    //si succes on exécute une fonction sur le résultat
+        },
         error: function() {
             alert('Could not complete registration. Please try again later.');
         }
@@ -209,19 +204,20 @@ const inputContact = document.querySelector('.containsInput');
 const btnCreateCtc = document.querySelector('.createContacte');
 const btnSaveCtc = document.querySelector('.SaveContacte');
 inputContact.style.display = 'none';
-//obtenir valeur des champs de modif
+//get value from edit fields input
 btnCreateCtc.addEventListener('click', function() { 
 inputContact.style.display = 'block';
-    updateFName.value(contactFirstName);
-    updateLName.value(contactLastName);
-    updateMail.value(contactEmail);
-    updatePass.value(contactPassword);
-    updatePhone.value(contactPhone);
+    $('#ContactFName').val(contactFirstName);
+    $('#ContactLName').val(contactLastName);
+    $('#ContactMaile').val(contactEmail);
+    $('#ContactPassw').val(contactPassword);
+    $('#ContactPhone').val(contactPhone);
 })
 
-btnSaveCtc.addEventListener('click', function() { //get the list of contacts from DATABASe = same logic
-//entrer les champs de modifs dans le tableau
+btnSaveCtc.addEventListener('click', function() {
+//send edited fields to server and hide inputs fields
     updateContact()
+    inputContact.style.display = 'none';
 })
 
 /* CONTRACTS */
@@ -230,12 +226,11 @@ const btnCreateCtr = document.querySelector('.createContracte');
 const btnSaveCtr = document.querySelector('.SaveContracte');
 inputContract.style.display = 'none';
 
-
 //helper ajax
 function updateContact() {
     $.ajax({
         url:'/contact' + '/' + LoggedcontactId,
-        method:'PUT',
+        method:'PATCH',
         contentType:'application/json',
         data:JSON.stringify({
           //  id: LoggedcontactId,
@@ -244,15 +239,11 @@ function updateContact() {
             email: $('#ContactMaile').val(),
             phone: $('#ContactPhone').val(),
             password: $('#ContactPassw').val()
-        }), //on paramètre la requete
+        }),
         success: function(result) {
             alert('Congratulations, your informations were updated.');
-            console.log('the result: '+ JSON.stringify(result));
-            console.log('ok this is the id: ' + LoggedcontactId);
-
-        },    //si succes on exécute une fonction sur le résultat
+        },
         error: function() {
-            console.log('error this is the id: ' + LoggedcontactId);
             alert('Could not complete updating your data. Please try again later.');
         }
     })

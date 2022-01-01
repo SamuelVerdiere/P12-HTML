@@ -135,6 +135,14 @@
   margin-bottom: 2%;
 }
 
+.subtitle {
+  background-color: #f2f2f3;
+}
+
+.pageTitle {
+  background-color: #f2f2ff
+}
+
 .containsInput, .containsInpute {
   margin:auto;
 }

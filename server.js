@@ -99,7 +99,7 @@ app.get('/contact/:id', (req, response) => {
     }});
 
 //update a contact
-app.put('/contact/:sfid', (req, response) => {
+app.patch('/contact/:sfid', (req, response) => {
     var sfid = req.params.sfid;
     console.log('BEFORE QUERY SFID: ' +  sfid);
     try {
