@@ -29,7 +29,12 @@ var inputFname = document.querySelector('.registerFNamee');
 var inputLname = document.querySelector('.registerLNamee');
 var inputMailr = document.querySelector('.registerMaile');
 var inputPassword = document.querySelector('.registerPassworde');
-
+//update
+var updateFName = document.getElementById('#ContactFName');
+var updateLName = document.getElementById('#ContactLName');
+var updateMail = document.getElementById('#ContactMaile');
+var updatePass = document.getElementById('#ContactPassw');
+var updatePhone = document.getElementById('#ContactPhone');
 /* Login part */
 //intial page setting
 btnoff.style.display = 'none';
@@ -88,9 +93,13 @@ formRegister.addEventListener('submit', (e) => {
     }
 })
 
-
 //helpers
 var LoggedcontactId;
+var contactFirstName;
+var contactLastName;
+var contactEmail;
+var contactPassword;
+var contactPhone;
 function getContacts() {
     $.ajax({  //setup the query
         url:'/api/getContact',
@@ -108,10 +117,16 @@ function getContacts() {
             $('#phonefromServ').text(contact.phone);
             $('#passfromServ').text(contact.password__c);
             LoggedcontactId = contact.sfid;
+            contactFirstName = contact.firstname;
+            contactLastName = contact.lastname;
+            contactEmail = contact.email;
+            contactPassword = contact.password__c;
+            contactPhone = contact.phone;
          },
-        error: function() {
+        error: function(error) {
             //prevent connexion and display error
             loggedContact = false;
+            console.log(error);
            alert('Unable to query Contacts. Please contact the Administrator.');
         }
     })
@@ -160,11 +175,9 @@ function registerContact() {
         }), //on paramètre la requete
         success: function(result) {
             console.log('Registration complete, '+result.firstname+' '+result.lastname+ ',' +result.externalmail__c+' you can now login with your mail and password.');
-            console.log('this is it.');
         },    //si succes on exécute une fonction sur le résultat
         error: function() {
             alert('Could not complete registration. Please try again later.');
-            console.log('no, it\'s not');
         }
     })
 }
@@ -199,13 +212,16 @@ inputContact.style.display = 'none';
 //obtenir valeur des champs de modif
 btnCreateCtc.addEventListener('click', function() { 
 inputContact.style.display = 'block';
+    updateFName.value(contactFirstName);
+    updateLName.value(contactLastName);
+    updateMail.value(contactEmail);
+    updatePass.value(contactPassword);
+    updatePhone.value(contactPhone);
 })
 
 btnSaveCtc.addEventListener('click', function() { //get the list of contacts from DATABASe = same logic
 //entrer les champs de modifs dans le tableau
     updateContact()
-    console.log('here: '+ LoggedcontactId);
-//puis POST les modifs dans sf
 })
 
 /* CONTRACTS */
@@ -216,7 +232,6 @@ inputContract.style.display = 'none';
 
 
 //helper ajax
-
 function updateContact() {
     $.ajax({
         url:'/contact' + '/' + LoggedcontactId,

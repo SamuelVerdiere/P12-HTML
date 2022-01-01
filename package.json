@@ -11,8 +11,7 @@
   "dependencies": {
     "body-parser": "^1.19.1",
     "bootstrap": "^5.1.3",
-    "express": "^6.14.12",
-    "jsforce": "$1.10.1",
+    "express": "^4.17.2",
     "pg": "^8.7.1"
   }
 }
