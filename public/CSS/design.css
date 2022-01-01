@@ -136,11 +136,24 @@
 }
 
 .subtitle {
-  background-color: #f2f2f3;
+  background-color: white;
+  width: fit-content;
+  margin:auto;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  padding-left: 2%;
+  padding-right: 2%;
+  margin-bottom: 3%;
 }
 
 .pageTitle {
-  background-color: #f2f2ff
+  background-color: white;
+  padding-left: 1%;
+  padding-right: 1%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  width: fit-content;
+  margin:auto;
 }
 
 .containsInput, .containsInpute {
