@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.static('public'));
 app.use(bodyparser.json());
 app.set('port', port);
-const uri = 'postgres://bguliycvpsyjpl:31bb19bd69631a69ffc0964c41f340e332b3c5221695dc2fa8751851aae785f2@ec2-52-31-219-113.eu-west-1.compute.amazonaws.com:5432/d1mb7qlenb1nv1';
+const uri = 'postgres://cevesmurimhaju:4b91787ad4da7cd84771f8aaf154ecf19128a00ee40cb4180c8a45e9db84e8b0@ec2-54-74-95-84.eu-west-1.compute.amazonaws.com:5432/dfi6nf71nvla16';
 
 //2. connect to the PostGres/Heroku database
 const client = new pg.Client({
