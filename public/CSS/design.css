@@ -12,7 +12,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     text-align: center;
-    justify-content: center;
+    justify-content: space-around;
   }
 
   #blog {
@@ -23,6 +23,8 @@
     position:relative;
     margin-bottom: 4%;
     display:block;
+    margin-top: 2%;
+    cursor: pointer;
   }
 
   .logout {
@@ -31,11 +33,18 @@
     align-self: center;
     min-height: 40px;
     min-width: 80px;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    cursor: pointer;
   }
 
   .cancelform {
     margin:auto;
     justify-self: auto;
+    border: 1px solid black;
+    background-color: snow;
+    width: 80%;
+    border-radius: 5%;
   }
 
   .nickname {
@@ -46,6 +55,7 @@
   .formcancele {
     margin:auto;
     justify-self:auto;
+    width: 80%;
   }
 
   #regist {
@@ -55,6 +65,9 @@
     width: 80px;
     margin: auto;
     margin-bottom: 5%;
+    margin-top: 2%;
+    border-radius: 5%;
+    cursor: pointer;
   }
 
   .loginIde, .loginMdpe {
@@ -62,6 +75,13 @@
     margin:auto;
     margin-top: 2%;
     justify-self: auto;
+    width: -webkit-calc(100% - 10px);
+    width: -moz-calc(100% - 10px);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
   }
 
   .registerFNamee, .registerLNamee,
@@ -69,6 +89,13 @@
     display:block;
     margin: auto;
     margin-bottom: 3%;
+    width: -webkit-calc(100% - 10px);
+    width: -moz-calc(100% - 10px);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
   }
 
   .formlogine, .register {
@@ -77,8 +104,14 @@
 
   .partLogin, .partRegister {
     justify-content: center;
+    border-style: solid black 1px;
+    border-radius: 5%;
   }
   
+h2 {
+  margin-top: 3%;
+}
+
   #contactTitle, #contractTitle,
   .createContact, .createContract {
     display : block;
@@ -95,6 +128,7 @@
     margin-left:auto;
     margin-right:auto;
     margin-bottom: 2%;
+    cursor: pointer;
   }
 
   .SaveContacte, .SaveContracte {
@@ -107,6 +141,8 @@
   .partLogin, .partRegister {
     width: 40%;
     justify-content: center;
+    border: 1px solid black;
+    background-color: snow;
   }
 
   .divContact, .divContract, .divProduct {
@@ -115,10 +151,13 @@
     position: relative;
     left: 5%;
     padding-bottom: 1%;
+    border-radius: 3%;
   }
+
   .titre {
     background-color: #f2f2f3;
     min-height: 75px;
+    border-radius: 2%;
   }
 
   .contacts, .contracts {

@@ -31,17 +31,17 @@ client.connect(error => {
 /* get contact from Salesforce, byt associating HTTP verb GET to a function.
 *we map the / path sent in GET request to the function. The function receives request
 *and response objects as parameters. */
-app.post('/api/getContact', (req, response) => {
+app.post('/api/getContact', (req, res) => {
     var lemail = req.body.email;
     var lepass = req.body.password;
     console.log('from js mail : '+ lemail);
     console.log('from js pass : ' + lepass);
     try {
-        client.query('SELECT * FROM salesforce.Contact where password__c=$1 AND email=$2', [lepass, lemail])
+        client.query('SELECT * FROM salesforce.Contact where password__c=$1 AND email=$2', 
+        [lepass, lemail])
         .then((data) => {
-            console.log('this are the data rows for mails: ' + data.rows[0].email);
             var contacts = data.rows[0];
-        response.json(contacts); 
+            res.json(contacts); 
     });
         } catch (error) {
             console.log(error);
@@ -50,7 +50,7 @@ app.post('/api/getContact', (req, response) => {
 
 /* create a contact after checking if it already exists
 * return sfid if the contact already exists. */
-app.post('/api/contacts', (req, response) => {
+app.post('/api/contacts', (req, res) => {
     try {
         //Set variables for body request
         var email = req.body.email;
@@ -64,46 +64,43 @@ app.post('/api/contacts', (req, response) => {
             if (contact !== undefined) {
                 if (contact.rowCount === 0) {
                     createContact = client.query('INSERT INTO salesforce.Contact (firstname, lastname, email, password__c, externalmail__c) VALUES ($1, $2, $3, $4, $3) RETURNING id', [firstname, lastname,email, password])
-                    .then((contact) => {response.json(contact.rows[0].id); });
+                    .then((contact) => {res.json(contact.rows[0].id); });
                 } else {
                     createContact = client.query('SELECT sfid, id FROM salesforce.Contact WHERE email = $1', [email])
                     .then((contact) => {
-                        response.json(contact.rows[0]); });}
+                        res.json(contact.rows[0]); });}
             } else {
-                response.json(createContact.rows[0]); }
+                res.json(createContact.rows[0]); }
         })} catch (error) {
         console.error(error.message);
 }});
 //get a contact with its ID. Query from SF, then get JSON response.
-app.get('/contact/id', (req, response) => {
+app.get('/contact/id', (req, res) => {
     try {
         const { id } = req.params;
         client.query('SELECT * FROM salesforce.contact WHERE id = $1', [id])
         .then((contact) => {
-            console.log(contact.rows[0]);
-            response.json(contact.rows[0]);
+            res.json(contact.rows[0]);
         });} catch (error) {
         console.error(error.message);
     }});
 
 //get a contact with its ID. Query from SF, then get JSON response.
-app.get('/contact/:id', (req, response) => {
+app.get('/contact/:id', (req, res) => {
     try {
         const { id } = req.params;
         client.query('SELECT * FROM salesforce.contact WHERE id = $1', [id])
         .then((contact) => {
-            console.log(contact.rows[0]);
-            response.json(contact.rows[0]);
+            res.json(contact.rows[0]);
         });} catch (error) {
         console.error(error.message);
     }});
 
 //update a contact
-app.patch('/contact/:sfid', (req, response) => {
+app.patch('/contact/:sfid', (req, res) => {
     var sfid = req.params.sfid;
     console.log('BEFORE QUERY SFID: ' +  sfid);
     try {
-        //var { sfid } = req.params.sfid;
         var firstname = req.body.firstname;
         var lastname = req.body.lastname;
         var email = req.body.email;
@@ -112,39 +109,36 @@ app.patch('/contact/:sfid', (req, response) => {
         client.query('UPDATE salesforce.contact SET firstname = $1, lastname= $2, email = $3, phone = $4, password__c = $5 WHERE sfid = $6 RETURNING sfid', 
         [firstname, lastname, email, phone, password, sfid])
         .then((contact) => {
-            console.log('REQ QUERY: ' + JSON.stringify(req.query));
-            response.json(contact);
+            res.json(contact);
         });} catch (err) {
         console.error(err.message);
     }});
 
 //deactivate a contact by setting custom field to false
-app.patch('/contact/:id', (req, response) => {
+app.patch('/contact/:id', (req, res) => {
     try {
         const { id } = req.params;
         client.query('UPDATE salesforce.Contact SET Status__c = false WHERE id = $1',
             [id]).then((contact) => {
-                response.json(contact);
+                res.json(contact);
         });} catch (error) {
         console.error(error.message);
     }});
 
 // get accounts
-app.get('/account', (req, response) => {
+app.get('/account', (req, res) => {
     try {
         client.query('SELECT * FROM salesforce.account').then((accounts) => {
-            console.log(accounts.rows);
-            response.json(accounts.rows);
+            res.json(accounts.rows);
         });} catch (error) {
         console.error(error.message);
     }});
 
 // get contracts
-app.get('/contracts', (req, response) => {
+app.get('/contracts', (req, res) => {
     try {
         client.query('SELECT * FROM salesforce.contract')
         .then((data) => {
-            console.log(data.rows);
             var contracts = data.rows;
             var contractTable = '<table class="tableContract" border=1>'+
             '<thead><tr><th>Contract Number</th><th>Status</th><th>Start Date</th><th>Term (months)</th></tr>'+
@@ -156,14 +150,14 @@ app.get('/contracts', (req, response) => {
                 contractTable = contractTable+'<tr><td>'+contract.contractnumber+'</td><td>'+contract.status+'</td><td>'+shortDate+'</td><td>'+contract.contractterm+'</td></tr>';              
             });
             contractTable = contractTable+'</tbody></table>';
-            response.send({html: contractTable});
+            res.send({html: contractTable});
         });
     } catch (error) {
         console.error(error.message);
     }});
 
 //create a new contract
-app.post('/contract', (req, response) => {
+app.post('/contract', (req, res) => {
     try {
         var accountName = req.body.name;
         var status = req.body.status;
@@ -176,28 +170,26 @@ app.post('/contract', (req, response) => {
             client.query('INSERT INTO salesforce.Contract (accountId, status, startDate, contractTerm) VALUES ($1, $2, $3, $4) RETURNING id',
             [accountId, status, startdate, endTerm])
         .then((Accounts) => {
-            response.json(Accounts.rows[0].id);
+            res.json(Accounts.rows[0].id);
         })})} catch (error) {
         console.error(error.message);
     }});
 
 //get a contract by its id
-app.get('/contract/:id', (req, response) => {
+app.get('/contract/:id', (req, res) => {
     try {
         const { id } = req.params.id;
         client.query('SELECT * FROM salesforce.contract WHERE id = $1', [id])
         .then((contracts) => {
-            console.log(contracts.rows[0]);
-            response.json(contracts.rows[0]);
+            res.json(contracts.rows[0]);
         });} catch (error) {
         console.error(error.message);
     }});
 
 //update contract by id and sfid
-app.put('/contract/:id', (req, response) => {
+app.put('/contract/:id', (req, res) => {
     try {
         const { id } = req.params.id;
-         //req.params;
         var accountName = req.body.name;
         var accountSfid = '';
         var endTerm = req.body.contractTerm;
@@ -209,13 +201,13 @@ app.put('/contract/:id', (req, response) => {
             client.query('UPDATE salesforce.Contract SET contractTerm = $1, startDate = $2, status = $3 WHERE accountId = $4 AND id = $5', 
             [endTerm, startdate, status, accountSfid, id])
         .then((data) => {
-            response.json(data);
+            res.json(data);
         });});} catch (error) {
         console.error(error.message);
     }});
 
 //get products
-app.get('/products', (req, response) => {
+app.get('/products', (req, res) => {
     try {
         client.query('SELECT * FROM salesforce.product2')
         .then((data) => {
@@ -229,7 +221,7 @@ app.get('/products', (req, response) => {
                 productTable = productTable+'<tr><td>'+product.name+'</td><td>'+product.productcode+'</td><td>'+product.description+'</td></tr>';              
             });
             productTable = productTable+'</tbody></table>';
-            response.send({html: productTable});
+            res.send({html: productTable});
         });
     } catch (error) {
         console.error(error.message);

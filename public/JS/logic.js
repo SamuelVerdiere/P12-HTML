@@ -33,47 +33,31 @@ var updateLName = document.getElementById('#ContactLName');
 var updateMail = document.getElementById('#ContactMaile');
 var updatePass = document.getElementById('#ContactPassw');
 var updatePhone = document.getElementById('#ContactPhone');
+//other
+const divoffhide = document.querySelector('.cancelform');
+const logdivhide = document.querySelector('.partLogin');
 /* Login part */
 //intial page setting
 loginId.style.display = 'block';
 loginMdp.style.display= 'block';
 btnoff.style.display = 'none';
+divoffhide.style.display = 'none';
 tableaux.style.display = 'none';
 var inputlog  = loginId.value; 
 var inputpswd = loginMdp.value;
-var loggedContact = false;
 //Event Listeners
 
 //on click on "login" button :
 formlogin.addEventListener('submit', (e) => { 
     e.preventDefault();
-    //if inputs are incorrectly filled:
-    if(loginId.value === '' || loginMdp.value === '') {
-        alert('Please fill Id & Password fields.');
-    }
-    else {
-    //if inputs are ok, allow connection and display elements...
-        getContacts();
-        if (loggedContact === true) {
-            displayElementsOnConfirm();
-            getContracts();
-            getProducts();
-        } else {
-            alert('Could not connect you. Please retry again later.');
-        }
-    
-    }
+    getContacts();
 })
 
 //on click on log out button, get back to initial page:
 formcancel.addEventListener('cancel', (e) => {
     e.preventDefault();
-    document.cookie = 'login=; expires=; secure';
-    document.cookie = 'password=; expires=; secure';
-
     sessionStorage.clear();
     hideElementsOnCancel();
-    loggedContact = false;
 })
 
 //on click on register button, save contact in SF:
@@ -96,6 +80,7 @@ var contactLastName;
 var contactEmail;
 var contactPassword;
 var contactPhone;
+
 function getContacts() {
     $.ajax({  //setup the query
         url:'/api/getContact',
@@ -107,7 +92,6 @@ function getContacts() {
          }),  //if success, execute code:
         success: function(contact) {
             //allow connection
-            loggedContact = true;
             $('#namefromServ').text(contact.name);
             $('#emailfromServ').text(contact.email);
             $('#phonefromServ').text(contact.phone);
@@ -118,12 +102,16 @@ function getContacts() {
             contactEmail = contact.email;
             contactPassword = contact.password__c;
             contactPhone = contact.phone;
+            displayElementsOnConfirm();
+            getContracts();
+            getProducts();
+            alert('Connection sucess');
          },
         error: function(error) {
             //prevent connexion and display error
-            loggedContact = false;
             console.log(error);
-           alert('Unable to query Contacts. Please contact the Administrator.');
+            console.log('Unable to query Contacts. Please contact the Administrator.');
+            alert('Could not connect you, please try again later.');
         }
     })
 }
@@ -183,6 +171,10 @@ function displayElementsOnConfirm() {
     loginId.style.display = 'none';
     loginMdp.style.display = 'none';
     btnoff.style.display = 'block';
+    logdivhide.style.display = 'none';
+    formlogin.style.display = 'none';
+    formRegister.style.display = 'none';
+    divoffhide.style.display = 'block';
     formcancel.appendChild(btnoff);
     tableaux.style.display = 'block';
     subtitleTop.innerHTML = 'Welcome to your personal interface, ' +loginId.value+'. You are now logged in.'
@@ -192,6 +184,7 @@ function hideElementsOnCancel() {
     btnlog.style.display = 'inline';
     loginId.style.display = 'block';
     loginMdp.style.display = 'block';
+    divoffhide.style.display = 'none';
     btnoff.style.display = 'none';
     pseudo.style.display = 'none';
 }
