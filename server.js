@@ -1,5 +1,5 @@
-/*This connects to Heroku Database and perform operations with Salesforce Database via queries. */
-//1. setup applications & modules
+/*This connects to Heroku Database and perform operations with Salesforce Database via queries.
+//1. setup applications & modules */
 const path = require('path');
 const express = require('express');
 const bodyparser = require('body-parser');
